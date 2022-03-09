@@ -7,7 +7,7 @@ For the technology module of your training you are tasked with building a web-ba
 ### Project Design Specifications and Documents
 
 ##### Relational Data Model
-![Relational Model](https://github.com/220207-java-enterprise/assignments/blob/main/foundations-project/imgs/ERS%20Relational%20Model.png)
+![Relational Model](https://raw.githubusercontent.com/220207-java-enterprise/assignments/main/foundations-project/imgs/ERS%20Relational%20Model.png)
 
 ##### Reimbursement Types
 Reimbursements are to be one of the following types:
