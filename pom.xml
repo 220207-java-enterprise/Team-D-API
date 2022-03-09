@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>technology</name>
-	<description>Project 2 - Technology</description>
+	<description>Technology Project</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
