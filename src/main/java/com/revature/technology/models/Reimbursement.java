@@ -61,7 +61,7 @@ public class Reimbursement {
 
     @Column(name = "type_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "type_id")
     private ReimbursementType type;
 
     public String getReimb_id() {
