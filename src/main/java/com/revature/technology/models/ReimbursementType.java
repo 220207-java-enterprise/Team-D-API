@@ -1,9 +1,6 @@
 package com.revature.technology.models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -11,6 +8,7 @@ import javax.persistence.Table;
 public class ReimbursementType {
     //It needs to be called type_id for Reimbursement
     @Id
+    @OneToMany
     private String type_id;
 
     @Column(unique = true)
