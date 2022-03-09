@@ -34,6 +34,10 @@ public class User {
     @JoinColumn(name="role_id", nullable = false)
     private UserRole role;
 
+    public User() {
+        super();
+    }
+
     public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, UserRole role) {
         this.user_id = user_id;
         this.username = username;

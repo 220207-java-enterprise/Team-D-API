@@ -13,6 +13,15 @@ public class ReimbursementStatus {
     @Column(unique = true)
     private String status;
 
+    public ReimbursementStatus() {
+        super();
+    }
+
+    public ReimbursementStatus(String status_id, String status) {
+        this.status_id = status_id;
+        this.status = status;
+    }
+
     public String getStatus_id() {
         return status_id;
     }

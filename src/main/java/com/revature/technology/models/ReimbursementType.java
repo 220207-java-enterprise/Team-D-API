@@ -13,6 +13,15 @@ public class ReimbursementType {
     @Column(unique = true)
     private String type;
 
+    public ReimbursementType() {
+        super();
+    }
+
+    public ReimbursementType(String type_id, String type) {
+        this.type_id = type_id;
+        this.type = type;
+    }
+
     public String getType_id() {
         return type_id;
     }
