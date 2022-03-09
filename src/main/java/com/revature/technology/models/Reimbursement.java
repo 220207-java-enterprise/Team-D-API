@@ -44,7 +44,7 @@ public class Reimbursement {
     private String payment_id;
 
     @ManyToOne
-    @JoinColumn(name = "author_user", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author_user;
 
     @ManyToOne
