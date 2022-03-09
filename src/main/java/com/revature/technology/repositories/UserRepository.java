@@ -18,12 +18,9 @@ public interface UserRepository extends CrudRepository <User, String> {
 
     User getUserByUsernameAndPassword(String username, String password);
 
-    List<User> getAll();
 
     List<User> getAllByActive(Boolean active);
 
-    //TODO correct command??
-    void update(User updatedObject);
 
 
 }
