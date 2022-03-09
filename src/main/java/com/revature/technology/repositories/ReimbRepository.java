@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface ReimbRepository extends CrudRepository {
+public interface ReimbRepository extends CrudRepository <Reimbursement, String> {
 
     Reimbursement getReimbById(String id);
 
