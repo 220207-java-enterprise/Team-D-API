@@ -1,8 +1,9 @@
 package com.revature.technology.models;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Table(name="ers_user_roles")
 public class UserRole {
 
     @Id
@@ -10,6 +11,10 @@ public class UserRole {
 
     @Column(unique = true)
     private String role;
+
+    public UserRole() {
+        super();
+    }
 
     public UserRole(String role_id, String role) {
         this.role_id = role_id;
