@@ -1,8 +1,9 @@
 package com.revature.technology.models;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Table(name="ers_user_roles")
 public class UserRole {
 
     @Id
