@@ -1,4 +1,4 @@
-package com.revature.technology.repos;
+package com.revature.technology.repositories;
 
 
 import com.revature.technology.models.UserRole;
