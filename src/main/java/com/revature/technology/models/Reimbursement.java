@@ -43,25 +43,20 @@ public class Reimbursement {
     @Column(name = "payment_id")
     private String payment_id;
 
-    @Column(name = "author_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author_user", nullable = false)
     private User author_user;
 
-    @Column(name = "resolver_id")
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "resolver_id")
     private User resolver_user;
 
-
-    @Column(name = "status_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id",nullable = false)
     private ReimbursementStatus status;
 
-    @Column(name = "type_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id" ,nullable = false)
     private ReimbursementType type;
 
     public String getReimb_id() {
