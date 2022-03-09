@@ -8,7 +8,6 @@ import javax.persistence.*;
 public class ReimbursementType {
     //It needs to be called type_id for Reimbursement
     @Id
-    @OneToMany
     private String type_id;
 
     @Column(unique = true)
