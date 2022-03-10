@@ -1,7 +1,7 @@
 package com.revature.technology.models;
 
 import javax.persistence.*;
-import java.util.Objects;
+
 
 @Entity
 @Table(name="ers_users")
@@ -10,7 +10,7 @@ public class User {
 
     @Id
     @Column(name="user_id")
-    private String user_id;
+    private String userId;
 
     @Column(name="username", nullable = false)
     private String username;
@@ -22,39 +22,39 @@ public class User {
     private String password;
 
     @Column(name="given_name", nullable = false)
-    private String given_name;
+    private String givenName;
 
     @Column(name="surname", nullable = false)
     private String surname;
 
     @Column(name="is_active", nullable = false)
-    private boolean is_active;
+    private boolean isActive;
 
     @ManyToOne
     @JoinColumn(name="role_id", nullable = false)
     private UserRole role;
 
-    public User() {
+      public User() {
         super();
     }
 
-    public User(String user_id, String username, String email, String password, String given_name, String surname, boolean is_active, UserRole role) {
-        this.user_id = user_id;
+    public User(String userId, String username, String email, String password, String givenName, String surname, boolean isActive, UserRole role) {
+        this.userId = userId;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.given_name = given_name;
+        this.givenName = givenName;
         this.surname = surname;
-        this.is_active = is_active;
+        this.isActive = isActive;
         this.role = role;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -81,12 +81,12 @@ public class User {
         this.password = password;
     }
 
-    public String getGiven_name() {
-        return given_name;
+    public String getGivenName() {
+        return givenName;
     }
 
-    public void setGiven_name(String given_name) {
-        this.given_name = given_name;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
     public String getSurname() {
@@ -97,12 +97,12 @@ public class User {
         this.surname = surname;
     }
 
-    public boolean getIs_active() {
-        return is_active;
+    public boolean getIsActive() {
+        return isActive;
     }
 
-    public void setIs_active(boolean is_active) {
-        this.is_active = is_active;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public UserRole getRole() {
@@ -116,13 +116,13 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id='" + user_id + '\'' +
+                "userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", given_name='" + given_name + '\'' +
+                ", givenName='" + givenName + '\'' +
                 ", surname='" + surname + '\'' +
-                ", is_active=" + is_active +
+                ", isActive=" + isActive +
                 ", role=" + role +
                 '}';
     }
