@@ -17,11 +17,11 @@ public class ReimbursementStatus {
         super();
     }
 
-    public ReimbursementStatus(String status_id, String status) {
-        this.status_id = status_id;
+    public ReimbursementStatus(String statusId, String status) {
+        this.statusId = statusId;
         this.status = status;
     }
-  
+
     public String getStatusId() {
         return statusId;
     }

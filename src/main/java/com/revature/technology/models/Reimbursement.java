@@ -65,16 +65,16 @@ public class Reimbursement {
         super();
     }
 
-    public Reimbursement(String reimb_id, double amount, LocalDateTime submitted, LocalDateTime resolved, String description, byte[] receipt, String payment_id, User author_user, User resolver_user, ReimbursementStatus status, ReimbursementType type) {
-        this.reimb_id = reimb_id;
+    public Reimbursement(String reimbId, double amount, LocalDateTime submitted, LocalDateTime resolved, String description, byte[] receipt, String paymentId, User authorUser, User resolverUser, ReimbursementStatus status, ReimbursementType type) {
+        this.reimbId = reimbId;
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
         this.receipt = receipt;
-        this.payment_id = payment_id;
-        this.author_user = author_user;
-        this.resolver_user = resolver_user;
+        this.paymentId = paymentId;
+        this.authorUser = authorUser;
+        this.resolverUser = resolverUser;
         this.status = status;
         this.type = type;
     }

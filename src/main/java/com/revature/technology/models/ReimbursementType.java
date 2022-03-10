@@ -18,12 +18,12 @@ public class ReimbursementType {
         super();
     }
 
-    public ReimbursementType(String type_id, String type) {
-        this.type_id = type_id;
+    public ReimbursementType(String typeId, String type) {
+        this.typeId = typeId;
         this.type = type;
     }
 
-      public String getTypeId() {
+    public String getTypeId() {
         return typeId;
     }
 
