@@ -7,21 +7,18 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReimbRepository extends CrudRepository<Reimbursement, String> {
+public interface ReimbRepository extends CrudRepository <Reimbursement, String> {
 
-    //Reimbursement getReimbById(String id);
+    Reimbursement getReimbByReimbId(String id);
 
-    //Reimbursement getReimbByAuthor_Id(String id);
+    List<Reimbursement> getAllByStatus(String status);
 
-    //List<Reimbursement> getAll();
+    List<Reimbursement> getAllByType(String type);
 
-    //List<Reimbursement> getAllByAuthor_id(String author_user);
+    List<Reimbursement> getAllByAuthorUser(String author_user);
 
-    //List<Reimbursement> getAllByStatus(String status);
+    List<Reimbursement> getAllByResolverUser(String resolver_user);
 
-    //List<Reimbursement> getAllByType(String type);
-
-    //List<Reimbursement> getAllByResolver_id(String resolver_user);
 
 
 

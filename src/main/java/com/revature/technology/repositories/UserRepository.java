@@ -10,20 +10,15 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository<User, String> {
 
-   // User getUserById(String id);
+    User getUserByUserId(String id);
 
-    //User getUserByUsername(String username);
+    User getUserByUsername(String username);
 
-    //User getUserByEmail(String email);
+    User getUserByEmail(String email);
 
-    //User getUserByUsernameAndPassword(String username, String password);
+    User getUserByUsernameAndPassword(String username, String password);
 
-    //List<User> getAll();
 
-    //List<User> getAllByActive(Boolean active);
-
-    //TODO correct command??
-    //void update(User updatedObject);
-
+    List<User> getAllByIsActive(Boolean active);
 
 }
