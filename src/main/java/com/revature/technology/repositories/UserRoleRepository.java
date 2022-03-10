@@ -13,8 +13,9 @@ public interface UserRoleRepository extends CrudRepository<UserRole, String> {
 
     UserRole getUserRoleByRoleId(String id);
 
-
+    UserRole getUserRoleByRole(String name);
 
 //    @Query("from UserRole ur where ur.role_id = ?1")
 //    List<UserRole> getUserRoleByID(String id);
+
 }

@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface ReimbStatusRepository extends CrudRepository <ReimbursementStatus, String>{
+public interface ReimbStatusRepository extends CrudRepository<ReimbursementStatus, String> {
 
-    ReimbursementStatus getReimbByStatusId(String id);
+    ReimbursementStatus getReimbByStatus_id(String status_id);
 
     ReimbursementStatus getReimbByStatus(String status);
 }

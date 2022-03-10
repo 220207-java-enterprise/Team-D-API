@@ -37,7 +37,7 @@ public class Reimbursement {
     @Column(name = "description", nullable=false)
     private String description;
 
-    @Column(name = "receipt", columnDefinition = "BLOB")
+    @Column(name = "receipt", columnDefinition = "BYTEA")
     private byte[] receipt;
 
     @Column(name = "payment_id")

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends CrudRepository <User, String> {
+public interface UserRepository extends CrudRepository<User, String> {
 
     User getUserByUserId(String id);
 
@@ -20,7 +20,5 @@ public interface UserRepository extends CrudRepository <User, String> {
 
 
     List<User> getAllByIsActive(Boolean active);
-
-
 
 }
