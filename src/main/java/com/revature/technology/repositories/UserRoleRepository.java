@@ -11,8 +11,10 @@ import java.util.List;
 @Repository
 public interface UserRoleRepository extends CrudRepository<UserRole, String> {
 
-    List<UserRole> getUserRoleById(String id);
+    UserRole getUserRoleByRoleId(String id);
 
-    @Query("from UserRole ur where ur.role_id = ?1")
-    List<UserRole> getUserRoleByID(String id);
+
+
+//    @Query("from UserRole ur where ur.role_id = ?1")
+//    List<UserRole> getUserRoleByID(String id);
 }

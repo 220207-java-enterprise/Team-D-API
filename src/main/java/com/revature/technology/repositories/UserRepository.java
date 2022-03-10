@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends CrudRepository <User, String> {
 
-    User getUserById(String id);
+    User getUserByUserId(String id);
 
     User getUserByUsername(String username);
 
@@ -19,7 +19,7 @@ public interface UserRepository extends CrudRepository <User, String> {
     User getUserByUsernameAndPassword(String username, String password);
 
 
-    List<User> getAllByActive(Boolean active);
+    List<User> getAllByIsActive(Boolean active);
 
 
 

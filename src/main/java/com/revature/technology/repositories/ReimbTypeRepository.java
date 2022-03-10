@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReimbTypeRepository extends CrudRepository <ReimbursementType, String>{
 
-    ReimbursementType getReimbByid(String id);
+    ReimbursementType getReimbByTypeId(String id);
 
     ReimbursementType getReimbByType(String type);
 }
