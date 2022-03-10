@@ -8,17 +8,17 @@ public class ReimbursementStatus {
     //It needs to be called status_id for Reimbursement
 
     @Id
-    private String status_id;
+    private String statusId;
 
     @Column(unique = true)
     private String status;
 
-    public String getStatus_id() {
-        return status_id;
+    public String getStatusId() {
+        return statusId;
     }
 
-    public void setStatus_id(String status_id) {
-        this.status_id = status_id;
+    public void setStatusId(String statusId) {
+        this.statusId = statusId;
     }
 
     public String getStatus() {
@@ -32,7 +32,7 @@ public class ReimbursementStatus {
     @Override
     public String toString() {
         return "ErsReimbStatus{" +
-                "status_id='" + status_id + '\'' +
+                "statusId='" + statusId + '\'' +
                 ", status='" + status + '\'' +
                 '}';
     }

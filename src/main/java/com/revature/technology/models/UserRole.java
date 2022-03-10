@@ -1,27 +1,31 @@
 package com.revature.technology.models;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name="ers_user_roles")
 public class UserRole {
 
     @Id
-    private String role_id;
+    private String roleId;
 
     @Column(unique = true)
     private String role;
 
-    public UserRole(String role_id, String role) {
-        this.role_id = role_id;
+    public UserRole(String roleId, String role) {
+        this.roleId = roleId;
         this.role = role;
     }
 
-    public String getRole_id() {
-        return role_id;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setRole_id(String role_id) {
-        this.role_id = role_id;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     public String getRole() {
@@ -37,7 +41,7 @@ public class UserRole {
     @Override
     public String toString() {
         return "UserRole{" +
-                "role_id='" + role_id + '\'' +
+                "roleId='" + roleId + '\'' +
                 ", role='" + role + '\'' +
                 '}';
     }

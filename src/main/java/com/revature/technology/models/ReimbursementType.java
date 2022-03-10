@@ -8,17 +8,17 @@ import javax.persistence.*;
 public class ReimbursementType {
     //It needs to be called type_id for Reimbursement
     @Id
-    private String type_id;
+    private String typeId;
 
     @Column(unique = true)
     private String type;
 
-    public String getType_id() {
-        return type_id;
+    public String getTypeId() {
+        return typeId;
     }
 
-    public void setType_id(String type_id) {
-        this.type_id = type_id;
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 
     public String getType() {
@@ -32,7 +32,7 @@ public class ReimbursementType {
     @Override
     public String toString() {
         return "ErsReimbType{" +
-                "type_id='" + type_id + '\'' +
+                "typeId='" + typeId + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }
