@@ -15,6 +15,10 @@ public class UserRole {
     @Column(unique = true)
     private String role;
 
+      public UserRole() {
+        super();
+    }
+
     public UserRole(String roleId, String role) {
         this.roleId = roleId;
         this.role = role;

@@ -59,6 +59,26 @@ public class Reimbursement {
     @JoinColumn(name = "type_id" ,nullable = false)
     private ReimbursementType type;
 
+
+
+    public Reimbursement() {
+        super();
+    }
+
+    public Reimbursement(String reimb_id, double amount, LocalDateTime submitted, LocalDateTime resolved, String description, byte[] receipt, String payment_id, User author_user, User resolver_user, ReimbursementStatus status, ReimbursementType type) {
+        this.reimb_id = reimb_id;
+        this.amount = amount;
+        this.submitted = submitted;
+        this.resolved = resolved;
+        this.description = description;
+        this.receipt = receipt;
+        this.payment_id = payment_id;
+        this.author_user = author_user;
+        this.resolver_user = resolver_user;
+        this.status = status;
+        this.type = type;
+    }
+
     public String getReimbId() {
         return reimbId;
     }
