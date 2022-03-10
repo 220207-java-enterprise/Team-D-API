@@ -23,7 +23,7 @@ public class Reimbursement {
 
     @Id
     @Column(name = "reimb_id")
-    private String reimb_id;
+    private String reimbId;
 
     @Column(name = "amount", nullable = false, columnDefinition = "numeric(6,2)")
     private double amount;
@@ -41,35 +41,50 @@ public class Reimbursement {
     private byte[] receipt;
 
     @Column(name = "payment_id")
-    private String payment_id;
+    private String paymentId;
 
-    @Column(name = "author_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User author_user;
+    @JoinColumn(name = "author_id", nullable = false)
+    private User authorUser;
 
-    @Column(name = "resolver_id")
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User resolver_user;
+    @JoinColumn(name = "resolver_id")
+    private User resolverUser;
 
-
-    @Column(name = "status_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "status_id")
+    @JoinColumn(name = "status_id",nullable = false)
     private ReimbursementStatus status;
 
-    @Column(name = "type_id", nullable = false)
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_id" ,nullable = false)
     private ReimbursementType type;
 
-    public String getReimb_id() {
-        return reimb_id;
+
+
+    public Reimbursement() {
+        super();
     }
 
-    public void setReimb_id(String reimb_id) {
-        this.reimb_id = reimb_id;
+    public Reimbursement(String reimbId, double amount, LocalDateTime submitted, LocalDateTime resolved, String description, byte[] receipt, String paymentId, User authorUser, User resolverUser, ReimbursementStatus status, ReimbursementType type) {
+        this.reimbId = reimbId;
+        this.amount = amount;
+        this.submitted = submitted;
+        this.resolved = resolved;
+        this.description = description;
+        this.receipt = receipt;
+        this.paymentId = paymentId;
+        this.authorUser = authorUser;
+        this.resolverUser = resolverUser;
+        this.status = status;
+        this.type = type;
+    }
+
+    public String getReimbId() {
+        return reimbId;
+    }
+
+    public void setReimbId(String reimbId) {
+        this.reimbId = reimbId;
     }
 
     public double getAmount() {
@@ -112,28 +127,28 @@ public class Reimbursement {
         this.receipt = receipt;
     }
 
-    public String getPayment_id() {
-        return payment_id;
+    public String getPaymentId() {
+        return paymentId;
     }
 
-    public void setPayment_id(String payment_id) {
-        this.payment_id = payment_id;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
-    public User getAuthor_user() {
-        return author_user;
+    public User getAuthorUser() {
+        return authorUser;
     }
 
-    public void setAuthor_user(User author_user) {
-        this.author_user = author_user;
+    public void setAuthorUser(User authorUser) {
+        this.authorUser = authorUser;
     }
 
-    public User getResolver_user() {
-        return resolver_user;
+    public User getResolverUser() {
+        return resolverUser;
     }
 
-    public void setResolver_user(User resolver_user) {
-        this.resolver_user = resolver_user;
+    public void setResolverUser(User resolverUser) {
+        this.resolverUser = resolverUser;
     }
 
     public ReimbursementStatus getStatus() {
@@ -157,12 +172,13 @@ public class Reimbursement {
         if (this == o) return true;
         if (!(o instanceof Reimbursement)) return false;
         Reimbursement that = (Reimbursement) o;
-        return Double.compare(that.getAmount(), getAmount()) == 0 && Objects.equals(getReimb_id(), that.getReimb_id()) && Objects.equals(getSubmitted(), that.getSubmitted()) && Objects.equals(getResolved(), that.getResolved()) && Objects.equals(getDescription(), that.getDescription()) && Arrays.equals(getReceipt(), that.getReceipt()) && Objects.equals(getPayment_id(), that.getPayment_id()) && Objects.equals(getAuthor_user(), that.getAuthor_user()) && Objects.equals(getResolver_user(), that.getResolver_user()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getType(), that.getType());
+        return Double.compare(that.getAmount(), getAmount()) == 0 && Objects.equals(getReimbId(), that.getReimbId()) && Objects.equals(getSubmitted(), that.getSubmitted()) && Objects.equals(getResolved(), that.getResolved()) && Objects.equals(getDescription(), that.getDescription()) && Arrays.equals(getReceipt(), that.getReceipt()) && Objects.equals(getPaymentId(), that.getPaymentId()) && Objects.equals(getAuthorUser(), that.getAuthorUser()) && Objects.equals(getResolverUser(), that.getResolverUser()) && Objects.equals(getStatus(), that.getStatus()) && Objects.equals(getType(), that.getType());
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getReimb_id(), getAmount(), getSubmitted(), getResolved(), getDescription(), getPayment_id(), getAuthor_user(), getResolver_user(), getStatus(), getType());
+        int result = Objects.hash(getReimbId(), getAmount(), getSubmitted(), getResolved(), getDescription(),
+                getPaymentId(), getAuthorUser(), getResolverUser(), getStatus(), getType());
         result = 31 * result + Arrays.hashCode(getReceipt());
         return result;
     }
@@ -170,15 +186,15 @@ public class Reimbursement {
     @Override
     public String toString() {
         return "Reimbursement{" +
-                "reimb_id='" + reimb_id + '\'' +
+                "reimbId='" + reimbId + '\'' +
                 ", amount=" + amount +
                 ", submitted=" + submitted +
                 ", resolved=" + resolved +
                 ", description='" + description + '\'' +
                 ", receipt=" + Arrays.toString(receipt) +
-                ", payment_id='" + payment_id + '\'' +
-                ", author_user=" + author_user +
-                ", resolver_user=" + resolver_user +
+                ", paymentId='" + paymentId + '\'' +
+                ", authorUser=" + authorUser +
+                ", resolverUser=" + resolverUser +
                 ", status=" + status +
                 ", type=" + type +
                 '}';
