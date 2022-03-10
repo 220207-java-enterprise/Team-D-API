@@ -11,9 +11,9 @@ public interface ReimbRepository extends CrudRepository <Reimbursement, String> 
 
     Reimbursement getReimbByReimbId(String id);
 
-    List<Reimbursement> getAllByStatusId(String status);
+    List<Reimbursement> getAllByStatus(String status);
 
-    List<Reimbursement> getAllByTypeId(String type);
+    List<Reimbursement> getAllByType(String type);
 
     List<Reimbursement> getAllByAuthorUser(String author_user);
 
