@@ -9,19 +9,15 @@ import java.util.List;
 @Repository
 public interface ReimbRepository extends CrudRepository <Reimbursement, String> {
 
-    Reimbursement getReimbById(String id);
+    Reimbursement getReimbByReimbId(String id);
 
-    Reimbursement getReimbByAuthor(String id);
+    List<Reimbursement> getAllByAuthorUser(String author_user);
 
-    List<Reimbursement> getAll();
+    List<Reimbursement> getAllByStatusId(String status);
 
-    List<Reimbursement> getAllByAuthor(String author_user);
+    List<Reimbursement> getAllByTypeId(String type);
 
-    List<Reimbursement> getAllByStatus(String status);
-
-    List<Reimbursement> getAllByType(String type);
-
-    List<Reimbursement> getAllByResolver(String resolver_user);
+    List<Reimbursement> getAllByResolverUser(String resolver_user);
 
 
 
