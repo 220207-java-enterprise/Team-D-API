@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 
 @RestController // TODO associates should look into the difference between @RestController and @Controller
-@RequestMapping("/Users")
+@RequestMapping("/users")
 public class UserController {
 
     private UserService UserService;
