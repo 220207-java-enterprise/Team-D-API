@@ -1,11 +1,8 @@
-package com.revature.technology.dtos;
+package com.revature.technology.dtos.requests;
 
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
