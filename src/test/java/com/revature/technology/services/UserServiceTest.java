@@ -1,5 +1,6 @@
 package com.revature.technology.services;
 
+import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewUserRequest;
 import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.User;
@@ -185,8 +186,6 @@ public class UserServiceTest {
                 "doe",
                 true, userRole);
 
-        System.out.println(validUser);
-
         //Act
         boolean result = sut.isUserValid(validUser);
 
@@ -246,8 +245,6 @@ public class UserServiceTest {
                 "Abhilekh", "Adhikari", "EMPLOYEE");
 
         User duplicateUserToSave = duplicateUserRequest.extractUser();
-        System.out.println(duplicateUserRequest);
-        System.out.println(duplicateUserToSave);
 
         String username = duplicateUserToSave.getUsername();
         String email = duplicateUserToSave.getEmail();
@@ -290,6 +287,62 @@ public class UserServiceTest {
             verify(spiedSut, times(0)).isEmailAvailable(invalidUserToSave.getEmail());
             verify(mockUserRepository, times(0)).save(invalidUserToSave);
         }
+    }
+
+
+    @Test
+    public void test_login_returnsAuthenticatedAppUser_givenValidAndKnownCredentials(){
+
+        //Arrange
+        LoginRequest loginRequest = new LoginRequest("4bhilekh", "p4$$word");
+        UserService spiedSut = Mockito.spy(sut);
+        String username =  loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        // Act
+        when(spiedSut.isUsernameValid(username)).thenReturn(true);
+        when(spiedSut.isPasswordValid(password)).thenReturn(true);
+        // How can I return a potentialUser (containing the hashed password?)
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+
+        if(loginRequest.getPassword().equals(loginRequest.getPassword())) {
+            User authUser = mockUserRepository.getUserByUsername(username);
+            // Assert
+            Assertions.assertNotNull(authUser);
+        }
+    }
+
+    @Test
+    public void test_login_throwsRuntimeException_givenUnknownUserCredentials() {
+        //Arrange
+        String unknownUsername = "unknownuser";
+        String somePassword = "p4$$WORD";
+        LoginRequest loginRequest = new LoginRequest(unknownUsername, somePassword);
+        when(mockUserRepository.getUserByUsernameAndPassword(unknownUsername, somePassword)).thenReturn(null);
+
+        //Act
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            sut.login(loginRequest);
+        });
+
+        String exceptionMessage = exception.getMessage();
+        Assertions.assertNotNull(exceptionMessage);
+    }
+
+    @Test
+    public void test_login_throwsInvalidRequestException_givenInvalidUsername() {
+        // Arrange
+        String invalidUsername = "no";
+        String validPassword = "p4$$word";
+        LoginRequest loginRequest = new LoginRequest(invalidUsername, validPassword);
+
+        //Act
+        Exception exception = assertThrows(InvalidRequestException.class, () -> {
+            sut.login(loginRequest);
+        });
+
+        String exceptionMessage = exception.getMessage();
+        Assertions.assertNotNull(exceptionMessage);
     }
 
 
