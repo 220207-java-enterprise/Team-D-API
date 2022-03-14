@@ -42,84 +42,76 @@ public class DummyDataInserter implements CommandLineRunner{
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        UserRole userRole1 = new UserRole();
-        userRole1.setRole(UUID.randomUUID().toString());
-        userRole1.setRoleId(UUID.randomUUID().toString());
+        //Create a table for Reimbursement Status
+        ReimbursementStatus ersReimbStatus_PENDING = new ReimbursementStatus();
+        ersReimbStatus_PENDING.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_PENDING.setStatus("PENDING");
 
-        UserRole userRole2 = new UserRole();
-        userRole2.setRole(UUID.randomUUID().toString());
-        userRole2.setRoleId(UUID.randomUUID().toString());
+        ReimbursementStatus ersReimbStatus_APPROVED = new ReimbursementStatus();
+        ersReimbStatus_APPROVED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_APPROVED.setStatus("APPROVED");
 
-        User user1 = new User();
-        user1.setUserId(UUID.randomUUID().toString());
-        user1.setUsername(UUID.randomUUID().toString());
-        user1.setEmail(UUID.randomUUID().toString());
-        user1.setPassword(UUID.randomUUID().toString());
-        user1.setGivenName(UUID.randomUUID().toString());
-        user1.setSurname(UUID.randomUUID().toString());
-        user1.setIsActive(false);
-        user1.setRole(userRole1);
+        ReimbursementStatus ersReimbStatus_DENIED = new ReimbursementStatus();
+        ersReimbStatus_DENIED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_DENIED.setStatus("DENIED");
 
-        User user2 = new User();
-        user2.setUserId(UUID.randomUUID().toString());
-        user2.setUsername(UUID.randomUUID().toString());
-        user2.setEmail(UUID.randomUUID().toString());
-        user2.setPassword(UUID.randomUUID().toString());
-        user2.setGivenName(UUID.randomUUID().toString());
-        user2.setSurname(UUID.randomUUID().toString());
-        user2.setIsActive(false);
-        user2.setRole(userRole2);
+        //Create a table for Reimbursement Type
+        ReimbursementType ersReimbType_LODGING = new ReimbursementType();
+        ersReimbType_LODGING.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_LODGING.setType("LODGING");
 
-        ReimbursementStatus reimbursementStatus = new ReimbursementStatus();
-        reimbursementStatus.setStatus(UUID.randomUUID().toString());
-        reimbursementStatus.setStatusId(UUID.randomUUID().toString());
+        ReimbursementType ersReimbType_TRAVEL = new ReimbursementType();
+        ersReimbType_TRAVEL.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_TRAVEL.setType("TRAVEL");
 
-        ReimbursementType reimbursementType = new ReimbursementType();
-        reimbursementType.setType(UUID.randomUUID().toString());
-        reimbursementType.setTypeId(UUID.randomUUID().toString());
+        ReimbursementType ersReimbType_FOOD = new ReimbursementType();
+        ersReimbType_FOOD.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_FOOD.setType("FOOD");
 
-        Reimbursement reimbursement = new Reimbursement();
-        reimbursement.setReimbId(UUID.randomUUID().toString());
-        Random random = new Random();
-        reimbursement.setAmount(random.nextDouble());
-        reimbursement.setSubmitted(LocalDateTime.now());
-        reimbursement.setResolved(LocalDateTime.now());
-        reimbursement.setDescription(UUID.randomUUID().toString());
-        byte[] byteArray = new byte[10];
-        random.nextBytes(byteArray);
-        reimbursement.setReceipt(byteArray);
-        reimbursement.setPaymentId(UUID.randomUUID().toString());
-        reimbursement.setAuthorUser(user1);
-        reimbursement.setResolverUser(user2);
-        reimbursement.setStatus(reimbursementStatus);
-        reimbursement.setType(reimbursementType);
-
-        UserRole userRoleAdmin = new UserRole();
-        userRoleAdmin.setRole("ADMIN");
-        userRoleAdmin.setRoleId("ADMIN");
-
-        UserRole userRoleFinance = new UserRole();
-        userRoleFinance.setRole("FINANCE MANAGER");
-        userRoleFinance.setRoleId("FINANCE MANAGER");
-
-        UserRole userRoleEmployee = new UserRole();
-        userRoleEmployee.setRole("EMPLOYEE");
-        userRoleEmployee.setRoleId("EMPLOYEE");
-
-        userRoleRepository.save(userRoleAdmin);
-        userRoleRepository.save(userRoleFinance);
-        userRoleRepository.save(userRoleEmployee);
+        ReimbursementType ersReimbType_OTHER = new ReimbursementType();
+        ersReimbType_OTHER.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_OTHER.setType("OTHER");
 
 
-        userRoleRepository.save(userRole1);
-        userRoleRepository.save(userRole2);
+        //Create a table for User Role
+        UserRole ersUserRole_ADMIN = new UserRole();
+        ersUserRole_ADMIN.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_ADMIN.setRole("ADMIN");
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        UserRole ersUserRole_FINANCE_MANAGER = new UserRole();
+        ersUserRole_FINANCE_MANAGER.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_FINANCE_MANAGER.setRole("FINANCE MANAGER");
 
-        reimbursementStatusRepository.save(reimbursementStatus);
-        reimbursementTypeRepository.save(reimbursementType);
+        UserRole ersUserRole_EMPLOYEE = new UserRole();
+        ersUserRole_EMPLOYEE.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_EMPLOYEE.setRole("EMPLOYEE");
 
-        reimbursementRepository.save(reimbursement);
+
+        reimbursementStatusRepository.save(ersReimbStatus_PENDING);
+        reimbursementStatusRepository.save(ersReimbStatus_APPROVED);
+        reimbursementStatusRepository.save(ersReimbStatus_DENIED);
+
+        reimbursementTypeRepository.save(ersReimbType_LODGING);
+        reimbursementTypeRepository.save(ersReimbType_TRAVEL);
+        reimbursementTypeRepository.save(ersReimbType_FOOD);
+        reimbursementTypeRepository.save(ersReimbType_OTHER);
+
+        userRoleRepository.save(ersUserRole_ADMIN);
+        userRoleRepository.save(ersUserRole_FINANCE_MANAGER);
+        userRoleRepository.save(ersUserRole_EMPLOYEE);
+
+
+        //Create a user as ADMIN
+        User ersUserADMIN = new User();
+        ersUserADMIN.setUserId(UUID.randomUUID().toString());
+        ersUserADMIN.setGivenName("ADMIN");
+        ersUserADMIN.setSurname("admin");
+        ersUserADMIN.setEmail("admin@gmail.com");
+        ersUserADMIN.setUsername("adminadmin");
+        ersUserADMIN.setPassword("Revature99?");
+        ersUserADMIN.setIsActive(true);
+        ersUserADMIN.setRole(ersUserRole_ADMIN);
+
+        userRepository.save(ersUserADMIN);
     }
 }
