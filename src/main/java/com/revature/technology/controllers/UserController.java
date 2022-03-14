@@ -1,9 +1,9 @@
 package com.revature.technology.controllers;
-import com.revature.technology.dtos.NewUserRequest;
-import com.revature.technology.dtos.ResourceCreationResponse;
-import com.revature.technology.models.User;
+import com.revature.technology.dtos.requests.NewUserRequest;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.services.UserService;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +32,16 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleInvalidRequests(InvalidRequestException e) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public HashMap<String, Object> handleResourceConflictExceptions(ResourceConflictException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());

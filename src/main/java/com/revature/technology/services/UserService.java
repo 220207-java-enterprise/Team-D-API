@@ -1,10 +1,13 @@
 package com.revature.technology.services;
 
-import com.revature.technology.dtos.NewUserRequest;
-import com.revature.technology.dtos.ResourceCreationResponse;
+import com.revature.technology.dtos.requests.LoginRequest;
+import com.revature.technology.dtos.requests.NewUserRequest;
+import com.revature.technology.dtos.responses.Principal;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.repositories.UserRoleRepository;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -46,15 +50,57 @@ public class UserService {
 
         // TODO encrypt provided password before storing in the database
 
+
+
         //Update UserRole
         UserRole userRole = userRoleRepository.getUserRoleByRole(newUser.getRole().getRole());
         newUser.setRole(userRole);
         UserRepo.save(newUser);
 
+
         return new ResourceCreationResponse(newUser.getUserId());
     }
 
-    private boolean isUserValid(User appUser) {
+    // ***********************************
+    //      LOGIN USER
+    // ***********************************
+
+    public User login(LoginRequest loginRequest){
+
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        if (!isUsernameValid(username) || !isPasswordValid(password)){
+            throw new InvalidRequestException("Invalid credentials provided");
+        }
+
+
+        User potentialUser = userRepo.getUserByUsername(username);
+
+        if (potentialUser == null){
+            throw new AuthenticationException();
+        }
+
+        if(!loginRequest.getPassword().equals(potentialUser.getPassword())) {
+            throw new AuthenticationException();
+        }
+
+        User authUser = userRepo.getUserByUsername(username);
+
+        if (authUser == null){
+            throw new AuthenticationException();
+        }
+
+        return authUser;
+    }
+
+    public boolean isUserActive(String id){
+
+        User user = userRepo.getUserById(id);
+        return user.getIsActive();
+    }
+
+    protected boolean isUserValid(User appUser) {
 
         // First name and last name are not just empty strings or filled with whitespace
         if (appUser.getGivenName().trim().equals("") || appUser.getSurname().trim().equals("")) {
@@ -72,21 +118,31 @@ public class UserService {
             return false;
         }
 
+        if(!isRoleValid(appUser.getRole())) {
+            return false;
+        }
+
+        if(!isEmailValid(appUser.getEmail())){
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public boolean isRoleValid(UserRole role){
         ArrayList<String> validRoles = new ArrayList<String>();
         validRoles.add("FINANCE MANAGER");
         validRoles.add("ADMIN");
         validRoles.add("EMPLOYEE");
-        if(!(validRoles.contains(appUser.getRole().getRole()))) {
+
+        if (!validRoles.contains(role.getRole())){
             return false;
         }
-
-        // Basic email validation
-        return isEmailValid(appUser.getEmail());
-
+        return true;
     }
 
     public boolean isEmailValid(String email) {
-        if (email == null) return false;
         return email.matches("^[^@\\s]+@[^@\\s.]+\\.[^@.\\s]+$");
     }
 
@@ -100,11 +156,11 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return UserRepo.getUsersByUsername(username) == null;
+        return userRepo.getUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
-        return UserRepo.getUsersByEmail(email) == null;
+        return userRepo.getUserByEmail(email) == null;
     }
 
 }
