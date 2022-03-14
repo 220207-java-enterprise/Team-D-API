@@ -1,7 +1,7 @@
 package com.revature.technology.services;
 
-import com.revature.technology.dtos.NewUserRequest;
-import com.revature.technology.dtos.ResourceCreationResponse;
+import com.revature.technology.dtos.requests.NewUserRequest;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
