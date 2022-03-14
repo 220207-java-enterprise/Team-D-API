@@ -8,6 +8,7 @@ import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
 import com.revature.technology.util.exceptions.AuthenticationException;
+import com.revature.technology.repositories.UserRoleRepository;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,17 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository userRepo;
+    private UserRepository UserRepo;
+    private UserRoleRepository userRoleRepository;
 
     @Autowired
-    public UserService(UserRepository UserRepo) {
-        this.userRepo = UserRepo;
+    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository) {
+        this.UserRepo = UserRepo;
+        this.userRoleRepository = userRoleRepository;
     }
 
     public ResourceCreationResponse register(NewUserRequest newUserRequest) throws IOException {
-
+        System.out.println();
         User newUser = newUserRequest.extractUser();
 
         if (!isUserValid(newUser)) {
@@ -47,7 +50,13 @@ public class UserService {
 
         // TODO encrypt provided password before storing in the database
 
-        userRepo.save(newUser);
+
+
+        //Update UserRole
+        UserRole userRole = userRoleRepository.getUserRoleByRole(newUser.getRole().getRole());
+        newUser.setRole(userRole);
+        UserRepo.save(newUser);
+
 
         return new ResourceCreationResponse(newUser.getUserId());
     }
