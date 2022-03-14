@@ -14,13 +14,13 @@ public interface UserRepository extends CrudRepository<User, String> {
     User getUserByUserId(String id);
 
     @Query("from User u where u.username = ?1")
-    User getUsersByUsername(String username);
+    User getUserByUsername(String username);
 
     @Query(
             value = "SELECT * from technology_project.ers_users where email = ?1",
             nativeQuery = true
     )
-    User getUsersByEmail(String email);
+    User getUserByEmail(String email);
 
     User getUserByUsernameAndPassword(String username, String password);
 

@@ -3,6 +3,7 @@ package com.revature.technology.services;
 import com.revature.technology.dtos.NewUserRequest;
 import com.revature.technology.dtos.ResourceCreationResponse;
 import com.revature.technology.models.User;
+import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
@@ -47,7 +48,7 @@ public class UserService {
         return new ResourceCreationResponse(newUser.getUserId());
     }
 
-    private boolean isUserValid(User appUser) {
+    protected boolean isUserValid(User appUser) {
 
         // First name and last name are not just empty strings or filled with whitespace
         if (appUser.getGivenName().trim().equals("") || appUser.getSurname().trim().equals("")) {
@@ -65,21 +66,31 @@ public class UserService {
             return false;
         }
 
+        if(!isRoleValid(appUser.getRole())) {
+            return false;
+        }
+
+        if(!isEmailValid(appUser.getEmail())){
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public boolean isRoleValid(UserRole role){
         ArrayList<String> validRoles = new ArrayList<String>();
         validRoles.add("FINANCE MANAGER");
         validRoles.add("ADMIN");
         validRoles.add("EMPLOYEE");
-        if(!(validRoles.contains(appUser.getRole().getRole()))) {
+
+        if (!validRoles.contains(role.getRole())){
             return false;
         }
-
-        // Basic email validation
-        return isEmailValid(appUser.getEmail());
-
+        return true;
     }
 
     public boolean isEmailValid(String email) {
-        if (email == null) return false;
         return email.matches("^[^@\\s]+@[^@\\s.]+\\.[^@.\\s]+$");
     }
 
@@ -93,11 +104,11 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return UserRepo.getUsersByUsername(username) == null;
+        return UserRepo.getUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
-        return UserRepo.getUsersByEmail(email) == null;
+        return UserRepo.getUserByEmail(email) == null;
     }
 
 }
