@@ -22,6 +22,12 @@ public interface UserRepository extends CrudRepository<User, String> {
     )
     User getUserByEmail(String email);
 
+    @Query(
+            value = "SELECT * from technology_project.ers_users where user_id = ?1",
+            nativeQuery = true
+    )
+    User getUserById(String id);
+
     User getUserByUsernameAndPassword(String username, String password);
 
 
