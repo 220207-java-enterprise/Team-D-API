@@ -21,12 +21,12 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository UserRepo;
+    private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
 
     @Autowired
     public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository) {
-        this.UserRepo = UserRepo;
+        this.userRepository = UserRepo;
         this.userRoleRepository = userRoleRepository;
     }
 
@@ -55,7 +55,7 @@ public class UserService {
         //Update UserRole
         UserRole userRole = userRoleRepository.getUserRoleByRole(newUser.getRole().getRole());
         newUser.setRole(userRole);
-        UserRepo.save(newUser);
+        userRepository.save(newUser);
 
 
         return new ResourceCreationResponse(newUser.getUserId());
@@ -75,7 +75,7 @@ public class UserService {
         }
 
 
-        User potentialUser = userRepo.getUserByUsername(username);
+        User potentialUser = userRepository.getUserByUsername(username);
 
         if (potentialUser == null){
             throw new AuthenticationException();
@@ -85,7 +85,7 @@ public class UserService {
             throw new AuthenticationException();
         }
 
-        User authUser = userRepo.getUserByUsername(username);
+        User authUser = userRepository.getUserByUsername(username);
 
         if (authUser == null){
             throw new AuthenticationException();
@@ -96,7 +96,7 @@ public class UserService {
 
     public boolean isUserActive(String id){
 
-        User user = userRepo.getUserById(id);
+        User user = userRepository.getUserById(id);
         return user.getIsActive();
     }
 
@@ -156,11 +156,11 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return userRepo.getUserByUsername(username) == null;
+        return userRepository.getUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
-        return userRepo.getUserByEmail(email) == null;
+        return userRepository.getUserByEmail(email) == null;
     }
 
 }
