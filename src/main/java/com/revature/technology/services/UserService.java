@@ -1,10 +1,13 @@
 package com.revature.technology.services;
 
-import com.revature.technology.dtos.NewUserRequest;
-import com.revature.technology.dtos.ResourceCreationResponse;
+import com.revature.technology.dtos.requests.LoginRequest;
+import com.revature.technology.dtos.requests.NewUserRequest;
+import com.revature.technology.dtos.responses.Principal;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +15,16 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private UserRepository UserRepo;
+    private UserRepository userRepo;
 
     @Autowired
     public UserService(UserRepository UserRepo) {
-        this.UserRepo = UserRepo;
+        this.userRepo = UserRepo;
     }
 
     public ResourceCreationResponse register(NewUserRequest newUserRequest) throws IOException {
@@ -43,9 +47,48 @@ public class UserService {
 
         // TODO encrypt provided password before storing in the database
 
-        UserRepo.save(newUser);
+        userRepo.save(newUser);
 
         return new ResourceCreationResponse(newUser.getUserId());
+    }
+
+    // ***********************************
+    //      LOGIN USER
+    // ***********************************
+
+    public User login(LoginRequest loginRequest){
+
+        String username = loginRequest.getUsername();
+        String password = loginRequest.getPassword();
+
+        if (!isUsernameValid(username) || !isPasswordValid(password)){
+            throw new InvalidRequestException("Invalid credentials provided");
+        }
+
+
+        User potentialUser = userRepo.getUserByUsername(username);
+
+        if (potentialUser == null){
+            throw new AuthenticationException();
+        }
+
+        if(!loginRequest.getPassword().equals(potentialUser.getPassword())) {
+            throw new AuthenticationException();
+        }
+
+        User authUser = userRepo.getUserByUsername(username);
+
+        if (authUser == null){
+            throw new AuthenticationException();
+        }
+
+        return authUser;
+    }
+
+    public boolean isUserActive(String id){
+
+        User user = userRepo.getUserById(id);
+        return user.getIsActive();
     }
 
     protected boolean isUserValid(User appUser) {
@@ -104,11 +147,11 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return UserRepo.getUserByUsername(username) == null;
+        return userRepo.getUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {
-        return UserRepo.getUserByEmail(email) == null;
+        return userRepo.getUserByEmail(email) == null;
     }
 
 }
