@@ -21,7 +21,7 @@ public class ApproveOrDenyReimbursementRequest {
         this.reimbursementId = reimbursementId;
     }
 
-    public boolean isApprove() {
+    public boolean getApprove() {
         return approve;
     }
 

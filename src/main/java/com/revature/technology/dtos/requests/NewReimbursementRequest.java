@@ -6,18 +6,16 @@ public class NewReimbursementRequest {
     private double amount;
     private String description;
     private byte[] receipt;
-    private String payment_id;
     private String reimbursementType;
 
     public NewReimbursementRequest() {
         super();
     }
 
-    public NewReimbursementRequest(double amount, String description, byte[] receipt, String payment_id, String reimbursementType) {
+    public NewReimbursementRequest(double amount, String description, byte[] receipt, String reimbursementType) {
         this.amount = amount;
         this.description = description;
         this.receipt = receipt;
-        this.payment_id = payment_id;
         this.reimbursementType = reimbursementType;
     }
 
@@ -45,14 +43,6 @@ public class NewReimbursementRequest {
         this.receipt = receipt;
     }
 
-    public String getPayment_id() {
-        return payment_id;
-    }
-
-    public void setPayment_id(String payment_id) {
-        this.payment_id = payment_id;
-    }
-
     public String getReimbursementType() {
         return reimbursementType;
     }
@@ -67,7 +57,6 @@ public class NewReimbursementRequest {
                 "amount=" + amount +
                 ", description='" + description + '\'' +
                 ", receipt=" + Arrays.toString(receipt) +
-                ", payment_id='" + payment_id + '\'' +
                 ", reimbursementType='" + reimbursementType + '\'' +
                 '}';
     }
