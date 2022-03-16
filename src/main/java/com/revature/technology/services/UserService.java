@@ -11,6 +11,7 @@ import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.repositories.UserRoleRepository;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -142,21 +143,16 @@ public class UserService {
             throw new InvalidRequestException("Invalid credentials provided");
         }
 
-
-        User potentialUser = userRepository.getUserByUsername(username);
-
-        if (potentialUser == null){
-            throw new AuthenticationException();
-        }
-
-        if(!loginRequest.getPassword().equals(potentialUser.getPassword())) {
-            throw new AuthenticationException();
-        }
-
         User authUser = userRepository.getUserByUsername(username);
-
-        if (authUser == null){
+        System.out.println(authUser);
+        if(!BCrypt.checkpw(password, authUser.getPassword()))
             throw new AuthenticationException();
+        // Check for if user exists then check if user is active
+        if (authUser == null) {
+            throw new AuthenticationException();
+        }
+        if (!authUser.getIsActive()) {
+            throw new ForbiddenException();
         }
 
         return authUser;
