@@ -1,6 +1,9 @@
 package com.revature.technology.controllers;
 import com.revature.technology.dtos.requests.NewUserRequest;
+import com.revature.technology.dtos.requests.UserUpdateRequest;
 import com.revature.technology.dtos.responses.ResourceCreationResponse;
+import com.revature.technology.dtos.responses.UserResponse;
+import com.revature.technology.models.User;
 import com.revature.technology.services.UserService;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
@@ -11,22 +14,65 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController // TODO associates should look into the difference between @RestController and @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService UserService;
+    private UserService userService;
 
     @Autowired
-    public UserController(UserService UserService) {
-        this.UserService = UserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+
+    // Admin get all users
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping()
+    public HashMap<String, Object> getAllUsers() {
+        HashMap<String, Object> userList = new HashMap<String, Object>();
+        List<UserResponse> myUsers = userService.getAllEmployees();
+        userList.put("endpoint", " /user");
+        userList.put("status", "UP");
+        userList.put("providedValues", myUsers);
+        return userList;
+    }
+
+
+    //TODO security
+    // Admin update user
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping(produces = "application/json", consumes = "application/json")
+    public void update(@RequestBody UserUpdateRequest userUpdateRequest) {
+        userService.updateUser(userUpdateRequest);
+    }
+
+    // Admin "Delete" user
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(produces = "application/json", consumes = "application/json")
+    public void delete(@RequestBody UserUpdateRequest userUpdateRequest) {
+        userService.deleteUser(userUpdateRequest);
+    }
+
+
+    // Register as User/Manager
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public ResourceCreationResponse registerUser(@RequestBody NewUserRequest request) throws IOException {
-        return UserService.register(request);
+    public HashMap<String, Object> register(@RequestBody NewUserRequest newUserRequest){
+        HashMap<String, Object> userList = new HashMap<String, Object>();
+
+        User newUser = userService.register(newUserRequest);
+        UserResponse userResponse = new UserResponse(newUser);
+
+        userList.put("endpoint", " /register");
+        userList.put("status", "UP");
+        userList.put("providedValues", userResponse);
+        System.out.println(userList);
+        System.out.println(newUser);
+
+        return userList;
     }
 
     @ExceptionHandler

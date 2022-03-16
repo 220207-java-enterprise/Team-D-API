@@ -234,7 +234,7 @@ public class UserServiceTest {
 
         doReturn(new User()).when(mockUserRepository).save(validUser);
 
-        ResourceCreationResponse registerResult = spiedSut.register(newUserRequest);
+        User registerResult = spiedSut.register(newUserRequest);
 
         Assertions.assertNotNull(registerResult);
     }
