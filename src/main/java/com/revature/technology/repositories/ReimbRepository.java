@@ -1,6 +1,10 @@
 package com.revature.technology.repositories;
 
 import com.revature.technology.models.Reimbursement;
+import com.revature.technology.models.ReimbursementStatus;
+import com.revature.technology.models.ReimbursementType;
+import com.revature.technology.models.User;
+import org.hibernate.usertype.UserType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +15,13 @@ public interface ReimbRepository extends CrudRepository <Reimbursement, String> 
 
     Reimbursement getReimbByReimbId(String id);
 
-    List<Reimbursement> getAllByStatus(String status);
+    List<Reimbursement> getAllByStatus(ReimbursementStatus reimbursementStatus);
 
-    List<Reimbursement> getAllByType(String type);
+    List<Reimbursement> getAllByType(ReimbursementType reimbursementType);
 
-    List<Reimbursement> getAllByAuthorUser(String author_user);
+    List<Reimbursement> getAllByAuthorUser(User authorUser);
 
-    List<Reimbursement> getAllByResolverUser(String resolver_user);
+    List<Reimbursement> getAllByResolverUser(User resolverUser);
 
 
 
