@@ -53,6 +53,10 @@ public class UserService {
     // ***********************************
     public User register(NewUserRequest newUserRequest) {
         User newUser = newUserRequest.extractUser();
+        UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
+        newUser.setRole(myRole);
+        System.out.println(newUser);
+        System.out.println(newUserRequest);
 
         if (!isUserValid(newUser) || newUserRequest.getRole().equals("ADMIN")) {
             throw new InvalidRequestException("Bad registration details were given.");
@@ -67,8 +71,7 @@ public class UserService {
             if (!emailAvailable) msg += "email";
             throw new ResourceConflictException(msg);
         }
-        UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
-        newUser.setRole(myRole);
+
 
         System.out.println(myRole);
         newUser.setUserId(UUID.randomUUID().toString());
@@ -170,26 +173,26 @@ public class UserService {
         if (appUser.getGivenName().trim().equals("") || appUser.getSurname().trim().equals("")) {
             return false;
         }
-
+        System.out.println("hoaaao");
         // Usernames must be a minimum of 8 and a max of 25 characters in length, and only contain alphanumeric characters.
         if (!isUsernameValid(appUser.getUsername())) {
             return false;
         }
-
+        System.out.println("hoao");
         // Passwords require a minimum eight characters, at least one uppercase letter, one lowercase
         // letter, one number and one special character
         if (!isPasswordValid(appUser.getPassword())) {
             return false;
         }
-
+        System.out.println("hoho");
         if(!isRoleValid(appUser.getRole())) {
             return false;
         }
-
+        System.out.println("haa");
         if(!isEmailValid(appUser.getEmail())){
             return false;
         }
-
+        System.out.println("ha");
         return true;
 
     }
