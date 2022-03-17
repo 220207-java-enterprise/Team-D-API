@@ -42,6 +42,8 @@ public class DummyDataInserter implements CommandLineRunner{
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        ```
+        //Create a table for Reimbursement Status
         //Create a table for Reimbursement Status
         ReimbursementStatus ersReimbStatus_PENDING = new ReimbursementStatus();
         ersReimbStatus_PENDING.setStatusId("1");
@@ -103,29 +105,29 @@ public class DummyDataInserter implements CommandLineRunner{
 
         //Create a user as ADMIN
         User ersUserADMIN = new User();
-        ersUserADMIN.setUserId(UUID.randomUUID().toString());
-        ersUserADMIN.setGivenName("ADMIN");
-        ersUserADMIN.setSurname("admin");
-        ersUserADMIN.setEmail("admin@gmail.com");
-        ersUserADMIN.setUsername("adminadmin");
-        ersUserADMIN.setPassword("Revature99?");
+        ersUserADMIN.setUserId("1");
+        ersUserADMIN.setGivenName("Abhilekh");
+        ersUserADMIN.setSurname("Adhikari");
+        ersUserADMIN.setEmail("4bhilekh@gmail.com");
+        ersUserADMIN.setUsername("4bhilekh");
+        ersUserADMIN.setPassword("p4$$WORD");
         ersUserADMIN.setIsActive(true);
         ersUserADMIN.setRole(admin);
 
         userRepository.save(ersUserADMIN);
 
         User user1 = new User();
-        user1.setUserId("1");
+        user1.setUserId("2");
         user1.setGivenName("Guy");
         user1.setSurname("Dood");
         user1.setEmail("guydood@gmail.com");
         user1.setUsername("HandsomeDevil");
         user1.setPassword("p4$$WORD");
         user1.setIsActive(true);
-        user1.setRole(new UserRole("1", "ADMIN"));
+        user1.setRole(new UserRole("2", "FINANCE MANAGER"));
 
         User user2 = new User();
-        user2.setUserId("2");
+        user2.setUserId("3");
         user2.setGivenName("Lady");
         user2.setSurname("Gal");
         user2.setEmail("ladygal@gmail.com");
