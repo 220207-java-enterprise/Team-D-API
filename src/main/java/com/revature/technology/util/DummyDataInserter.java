@@ -80,11 +80,11 @@ public class DummyDataInserter implements CommandLineRunner{
 
         UserRole employee = new UserRole();
         employee.setRoleId("2");
-        employee.setRole("EMPLOYEE");
+        employee.setRole("FINANCE MANAGER");
 
         UserRole manager = new UserRole();
         manager.setRoleId("3");
-        manager.setRole("MANAGER");
+        manager.setRole("EMPLOYEE");
 
 
         reimbursementStatusRepository.save(ersReimbStatus_PENDING);
@@ -132,7 +132,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user2.setUsername("WonderWoman");
         user2.setPassword("p4$$WORD");
         user2.setIsActive(true);
-        user2.setRole(new UserRole("2", "EMPLOYEE"));
+        user2.setRole(new UserRole("3", "EMPLOYEE"));
 
         userRepository.save(user1);
         userRepository.save(user2);

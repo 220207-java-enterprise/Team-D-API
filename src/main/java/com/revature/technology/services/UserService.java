@@ -194,7 +194,7 @@ public class UserService {
 
     public boolean isRoleValid(UserRole role){
         ArrayList<String> validRoles = new ArrayList<String>();
-        validRoles.add("MANAGER");
+        validRoles.add("FINANCE MANAGER");
         validRoles.add("ADMIN");
         validRoles.add("EMPLOYEE");
 
