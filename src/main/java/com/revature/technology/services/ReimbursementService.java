@@ -1,5 +1,6 @@
 package com.revature.technology.services;
 
+import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
 import com.revature.technology.models.Reimbursement;
@@ -11,6 +12,7 @@ import com.revature.technology.util.exceptions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,5 +116,63 @@ public class ReimbursementService {
             reimbursementResponseList.add(reimbursementResponse);
         }
         return reimbursementResponseList;
+    }
+
+    public ReimbursementResponse resolveReimbursement(String reimbId, Principal requester,
+                                                      ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest){
+
+        if (!requester.getRole().equals("FINANCE MANAGER")){
+            throw new ForbiddenException();
+        }
+
+        Reimbursement resolvedReimbursement = new Reimbursement();
+        User resolver = userRepository.getUserById(requester.getId());
+
+        if (approveOrDenyReimbursementRequest.getApprove()){
+            resolvedReimbursement = reimbRepository.getReimbByReimbId(reimbId);
+            resolvedReimbursement.setResolved(LocalDateTime.now());
+            resolvedReimbursement.setResolverUser(resolver);
+            resolvedReimbursement.setStatus(new ReimbursementStatus("2","APPROVED"));
+            reimbRepository.save(resolvedReimbursement);
+
+            ReimbursementResponse reimbursementResponse = new ReimbursementResponse(
+                    resolvedReimbursement.getReimbId(),
+                    resolvedReimbursement.getAmount(),
+                    resolvedReimbursement.getSubmitted(),
+                    resolvedReimbursement.getResolved(),
+                    resolvedReimbursement.getDescription(),
+                    resolvedReimbursement.getReceipt(),
+                    resolvedReimbursement.getPaymentId(),
+                    resolvedReimbursement.getAuthorUser().getGivenName() + " " + resolvedReimbursement.getAuthorUser().getSurname(),
+                    resolvedReimbursement.getResolverUser().getGivenName()+" "+resolvedReimbursement.getResolverUser().getSurname(),
+                    resolvedReimbursement.getStatus().getStatus(),
+                    resolvedReimbursement.getType().getType()
+            );
+            return reimbursementResponse;
+
+        } else {
+            resolvedReimbursement = reimbRepository.getReimbByReimbId(reimbId);
+            resolvedReimbursement.setResolved(LocalDateTime.now());
+            resolvedReimbursement.setResolverUser(resolver);
+            resolvedReimbursement.setStatus(new ReimbursementStatus("3","DENIED"));
+            reimbRepository.save(resolvedReimbursement);
+
+            ReimbursementResponse reimbursementResponse = new ReimbursementResponse(
+                    resolvedReimbursement.getReimbId(),
+                    resolvedReimbursement.getAmount(),
+                    resolvedReimbursement.getSubmitted(),
+                    resolvedReimbursement.getResolved(),
+                    resolvedReimbursement.getDescription(),
+                    resolvedReimbursement.getReceipt(),
+                    resolvedReimbursement.getPaymentId(),
+                    resolvedReimbursement.getAuthorUser().getGivenName() + " " + resolvedReimbursement.getAuthorUser().getSurname(),
+                    resolvedReimbursement.getResolverUser().getGivenName()+" "+resolvedReimbursement.getResolverUser().getSurname(),
+                    resolvedReimbursement.getStatus().getStatus(),
+                    resolvedReimbursement.getType().getType()
+            );
+
+            return reimbursementResponse;
+        }
+
     }
 }
