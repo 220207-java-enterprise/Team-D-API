@@ -7,12 +7,15 @@ import com.revature.technology.dtos.requests.NewReimbursementRequest;
 import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthForbiddenException;
 import com.revature.technology.util.exceptions.AuthenticationException;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.exceptions.NotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -107,10 +110,10 @@ public class ReimbursementController {
     @GetMapping(value = "find-all-pending-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        List<ReimbursementResponse> pendingReimbursementList = reimbursementService.findAllPendingReimbursement(requester);
 
-        return null;
+        return pendingReimbursementList;
     }
 
     //An authenticated finance manager can view a history of requests that they have approved/denied
@@ -118,21 +121,25 @@ public class ReimbursementController {
     @GetMapping(value = "find-all-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        List<ReimbursementResponse> managersReimburementList =
+                reimbursementService.findAllReimbursementsByManager(requester);
 
-        return null;
+        return managersReimburementList;
     }
 
     //An authenticated finance manager can approve/deny reimbursement requests
-    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny
-    @PutMapping(value = "approve-or-deny",produces = "application/json")
-    public void handleReimbursementRequestByFinanceManager(@RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
+    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny/<id>
+    @PutMapping(value = "approve-or-deny/{reimbId}",produces = "application/json")
+    public ReimbursementResponse approveOrDenyReimbursementByFinanceManager(@PathVariable String reimbId,
+                                                           @RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
                                                             HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        ReimbursementResponse resolvedReimbursement = reimbursementService.resolveReimbursement(reimbId, requester,
+                approveOrDenyReimbursementRequest);
 
+        return resolvedReimbursement;
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -153,6 +160,28 @@ public class ReimbursementController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleInvalidRequest(InvalidRequestException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public HashMap<String, Object> handleForbiddenRequest(ForbiddenException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public HashMap<String, Object> handleUserNotLoggedIn(NotLoggedInException e){
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());
