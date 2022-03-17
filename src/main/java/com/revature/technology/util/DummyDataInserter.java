@@ -44,46 +44,47 @@ public class DummyDataInserter implements CommandLineRunner{
     public void run(String... args) throws Exception {
         //Create a table for Reimbursement Status
         ReimbursementStatus ersReimbStatus_PENDING = new ReimbursementStatus();
-        ersReimbStatus_PENDING.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_PENDING.setStatusId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9h");
         ersReimbStatus_PENDING.setStatus("PENDING");
 
         ReimbursementStatus ersReimbStatus_APPROVED = new ReimbursementStatus();
-        ersReimbStatus_APPROVED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_APPROVED.setStatusId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9i");
         ersReimbStatus_APPROVED.setStatus("APPROVED");
 
         ReimbursementStatus ersReimbStatus_DENIED = new ReimbursementStatus();
-        ersReimbStatus_DENIED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_DENIED.setStatusId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9j");
         ersReimbStatus_DENIED.setStatus("DENIED");
 
         //Create a table for Reimbursement Type
         ReimbursementType ersReimbType_LODGING = new ReimbursementType();
-        ersReimbType_LODGING.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_LODGING.setTypeId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9d");
         ersReimbType_LODGING.setType("LODGING");
 
         ReimbursementType ersReimbType_TRAVEL = new ReimbursementType();
-        ersReimbType_TRAVEL.setTypeId(UUID.randomUUID().toString());
+        //ersReimbType_TRAVEL.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_TRAVEL.setTypeId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9e");
         ersReimbType_TRAVEL.setType("TRAVEL");
 
         ReimbursementType ersReimbType_FOOD = new ReimbursementType();
-        ersReimbType_FOOD.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_FOOD.setTypeId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9f");
         ersReimbType_FOOD.setType("FOOD");
 
         ReimbursementType ersReimbType_OTHER = new ReimbursementType();
-        ersReimbType_OTHER.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_OTHER.setTypeId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9g");
         ersReimbType_OTHER.setType("OTHER");
 
 
         //Create a table for User Role
         UserRole ersUserRole_ADMIN = new UserRole();
-        ersUserRole_ADMIN.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_ADMIN.setRoleId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9a");
         ersUserRole_ADMIN.setRole("ADMIN");
 
         UserRole ersUserRole_FINANCE_MANAGER = new UserRole();
-        ersUserRole_FINANCE_MANAGER.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_FINANCE_MANAGER.setRoleId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9b");
         ersUserRole_FINANCE_MANAGER.setRole("FINANCE MANAGER");
 
         UserRole ersUserRole_EMPLOYEE = new UserRole();
-        ersUserRole_EMPLOYEE.setRoleId(UUID.randomUUID().toString());
+        ersUserRole_EMPLOYEE.setRoleId("7c3521f5-ff75-4e8a-9913-01d15ee4dc9c");
         ersUserRole_EMPLOYEE.setRole("EMPLOYEE");
 
 
