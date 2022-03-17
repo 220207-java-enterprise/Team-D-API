@@ -5,6 +5,7 @@ import com.revature.technology.models.ReimbursementStatus;
 import com.revature.technology.models.ReimbursementType;
 import com.revature.technology.models.User;
 import org.hibernate.usertype.UserType;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +22,9 @@ public interface ReimbRepository extends CrudRepository <Reimbursement, String> 
 
     List<Reimbursement> getAllByAuthorUser(User authorUser);
 
+    @Query("from Reimbursement r where r.authorUser = ?1 and r.status.status = ?2")
+    List<Reimbursement> getAllPendingByAuthorUser(User authorUser, String status);
+
     List<Reimbursement> getAllByResolverUser(User resolverUser);
-
-
-
 
 }
