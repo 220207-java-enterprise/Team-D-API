@@ -12,6 +12,7 @@ import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.exceptions.NotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -121,6 +122,17 @@ public class ReimbursementController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleForbiddenRequest(ForbiddenException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public HashMap<String, Object> handleUserNotLoggedIn(NotLoggedInException e){
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());

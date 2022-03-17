@@ -8,6 +8,7 @@ import com.revature.technology.models.User;
 import com.revature.technology.repositories.ReimbRepository;
 import com.revature.technology.repositories.UserRepository;
 import com.revature.technology.util.exceptions.ForbiddenException;
+import com.revature.technology.util.exceptions.NotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +54,11 @@ public class ReimbursementService {
     }
 
     public List<ReimbursementResponse> findAllPendingReimbursement(Principal requester){
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
         if (!requester.getRole().equals("FINANCE MANAGER")){
             throw new ForbiddenException();
         }
