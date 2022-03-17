@@ -82,4 +82,37 @@ public class ReimbursementService {
         }
         return reimbursementResponseList;
     }
+
+    public List<ReimbursementResponse> findAllReimbursementsByManager(Principal requester){
+
+        User currentUser = userRepository.getUserById(requester.getId());
+
+        if (!requester.getRole().equals("FINANCE MANAGER")){
+            throw new ForbiddenException();
+        }
+
+        List<Reimbursement> resolverReimbursementList  = reimbRepository.getAllByResolverUser(currentUser);
+
+        List<ReimbursementResponse> reimbursementResponseList = new ArrayList<>();
+        for(Reimbursement reimbursement : resolverReimbursementList){
+            ReimbursementResponse reimbursementResponse = new ReimbursementResponse(
+                    reimbursement.getReimbId(),
+                    reimbursement.getAmount(),
+                    reimbursement.getSubmitted(),
+                    reimbursement.getResolved(),
+                    reimbursement.getDescription(),
+                    reimbursement.getReceipt(),
+                    reimbursement.getPaymentId(),
+                    reimbursement.getAuthorUser().getGivenName() + " " + reimbursement.getAuthorUser().getSurname(),
+                    reimbursement.getStatus().getStatus(),
+                    reimbursement.getType().getType()
+            );
+            if(reimbursement.getResolverUser() != null){
+                reimbursementResponse.setResolver(reimbursement.getResolverUser().getGivenName() + " " + reimbursement.getResolverUser().getSurname());
+            }
+
+            reimbursementResponseList.add(reimbursementResponse);
+        }
+        return reimbursementResponseList;
+    }
 }
