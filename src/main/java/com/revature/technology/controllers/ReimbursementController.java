@@ -6,6 +6,7 @@ import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
@@ -86,7 +87,7 @@ public class ReimbursementController {
     @GetMapping(value = "find-all-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
+
         List<ReimbursementResponse> managersReimburementList =
                 reimbursementService.findAllReimbursementsByManager(requester);
 
@@ -94,14 +95,17 @@ public class ReimbursementController {
     }
 
     //An authenticated finance manager can approve/deny reimbursement requests
-    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny
-    @PutMapping(value = "approve-or-deny",produces = "application/json")
-    public void handleReimbursementRequestByFinanceManager(@RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
+    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny/<id>
+    @PutMapping(value = "approve-or-deny/{reimbId}",produces = "application/json")
+    public ReimbursementResponse approveOrDenyReimbursementByFinanceManager(@PathVariable String reimbId,
+                                                           @RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
                                                             HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        ReimbursementResponse resolvedReimbursement = reimbursementService.resolveReimbursement(reimbId, requester,
+                approveOrDenyReimbursementRequest);
 
+        return resolvedReimbursement;
     }
 
 
