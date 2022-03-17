@@ -10,7 +10,9 @@ import com.revature.technology.models.Reimbursement;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.exceptions.NotLoggedInException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -72,12 +74,13 @@ public class ReimbursementController {
     //An authenticated finance manager can view a list of all pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/find-all-pending-reimbursements-by-finance-manager
     @GetMapping(value = "find-all-pending-reimbursements-by-finance-manager",produces = "application/json")
-    public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request){
+    public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request,
+                                                                                    HttpServletResponse response){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        List<ReimbursementResponse> pendingReimbursementList = reimbursementService.findAllPendingReimbursement(requester);
 
-        return null;
+        return pendingReimbursementList;
     }
 
     //An authenticated finance manager can view a history of requests that they have approved/denied
@@ -108,6 +111,28 @@ public class ReimbursementController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleInvalidRequest(InvalidRequestException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public HashMap<String, Object> handleForbiddenRequest(ForbiddenException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public HashMap<String, Object> handleUserNotLoggedIn(NotLoggedInException e){
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());
