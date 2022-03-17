@@ -99,6 +99,10 @@ public class ReimbursementService {
 
         User currentUser = userRepository.getUserById(requester.getId());
 
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
         if (!requester.getRole().equals("FINANCE MANAGER")){
             throw new ForbiddenException();
         }
