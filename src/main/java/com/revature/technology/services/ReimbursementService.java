@@ -93,9 +93,6 @@ public class ReimbursementService {
 
     public List<ReimbursementResponse> findAllReimbursementsByManager(Principal requester){
 
-        if (requester == null){
-            throw new NotLoggedInException();
-        }
 
         User currentUser = userRepository.getUserById(requester.getId());
 
