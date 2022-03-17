@@ -117,14 +117,14 @@ public class DummyDataInserter implements CommandLineRunner{
 
 
         User myadmin = new User();
-        ersUserADMIN.setUserId("4");
-        ersUserADMIN.setGivenName("Hugh");
-        ersUserADMIN.setSurname("Jackman");
-        ersUserADMIN.setEmail("wolverine@gmail.com");
-        ersUserADMIN.setUsername("iamwolverine");
-        ersUserADMIN.setPassword("p4$$WORD");
-        ersUserADMIN.setIsActive(true);
-        ersUserADMIN.setRole(admin);
+        myadmin.setUserId("4");
+        myadmin.setGivenName("Hugh");
+        myadmin.setSurname("Jackman");
+        myadmin.setEmail("wolverine@gmail.com");
+        myadmin.setUsername("iamwolverine");
+        myadmin.setPassword("p4$$WORD");
+        myadmin.setIsActive(true);
+        myadmin.setRole(new UserRole("1", "ADMIN"));
 
         User user1 = new User();
         user1.setUserId("2");
