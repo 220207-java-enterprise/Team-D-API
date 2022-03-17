@@ -45,6 +45,14 @@ public class ReimbursementService {
 
     //For Employee ---------------------------------------------------------------------------------------
     public List<ReimbursementResponse> findAllPendingReimbursementsByEmployee(Principal requester){
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
+        if (!requester.getRole().equals("EMPLOYEE")){
+            throw new ForbiddenException();
+        }
         User currentUser = userRepository.getUserById(requester.getId());
         List<Reimbursement> reimbursementList = reimbRepository.getAllPendingByAuthorUser(currentUser, "PENDING");
 
@@ -57,6 +65,14 @@ public class ReimbursementService {
 
         if(reimbursement == null){
             throw new InvalidRequestException("reimbursement does not exist");
+        }
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
+        if (!requester.getRole().equals("EMPLOYEE")){
+            throw new ForbiddenException();
         }
 
         if(updatePendingReimbursementRequest.getAmount()>0 && updatePendingReimbursementRequest.getAmount()<10000){
@@ -87,6 +103,15 @@ public class ReimbursementService {
     }
 
     public List<ReimbursementResponse> findAllReimbursementsByEmployee(Principal requester){
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
+        if (!requester.getRole().equals("EMPLOYEE")){
+            throw new ForbiddenException();
+        }
+
         User currentUser = userRepository.getUserById(requester.getId());
         List<Reimbursement> reimbursementList = reimbRepository.getAllByAuthorUser(currentUser);
 
@@ -95,6 +120,15 @@ public class ReimbursementService {
     }
 
     public String submitNewReimbursementRequestByEmployee (NewReimbursementRequest newReimbursementRequest, Principal requester){
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
+        if (!requester.getRole().equals("EMPLOYEE")){
+            throw new ForbiddenException();
+        }
+
         User currentUser = userRepository.getUserById(requester.getId());
         ReimbursementType reimbursementType = reimbTypeRepository.getReimbByType(newReimbursementRequest.getReimbursementType());
         ReimbursementStatus reimbursementStatus = reimbStatusRepository.getReimbByStatus("PENDING");

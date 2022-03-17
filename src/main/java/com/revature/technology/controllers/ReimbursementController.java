@@ -2,16 +2,12 @@ package com.revature.technology.controllers;
 
 
 import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
-import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewReimbursementRequest;
 import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
-import com.revature.technology.dtos.responses.ResourceCreationResponse;
-import com.revature.technology.models.Reimbursement;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
-import com.revature.technology.util.exceptions.AuthForbiddenException;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
@@ -21,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,8 +41,6 @@ public class ReimbursementController {
     public List<ReimbursementResponse> findAllPendingReimbursementsByEmployee(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
-        authenticateForEmployee(requester);
-
         //EMPLOYEE can view their pending reimbursement requests
         List<ReimbursementResponse> allPendingReimbursements = reimbursementService.findAllPendingReimbursementsByEmployee(requester);
 
@@ -61,8 +53,6 @@ public class ReimbursementController {
     @PutMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
     public String updatePendingReimbursementByEmployee(@RequestBody UpdatePendingReimbursementRequest updatePendingReimbursementRequest, HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-
-        authenticateForEmployee(requester);
 
         return reimbursementService.updatePendingReimbursementByEmployee(updatePendingReimbursementRequest, requester);
     }
@@ -97,7 +87,6 @@ public class ReimbursementController {
             throw new InvalidRequestException("incorrect inputs");
         }
 
-        authenticateForEmployee(requester);
 
         return reimbursementService.submitNewReimbursementRequestByEmployee(newReimbursementRequest, requester);
     }
@@ -142,18 +131,6 @@ public class ReimbursementController {
         return resolvedReimbursement;
     }
 
-    //---------------------------------------------------------------------------------------------------------------
-    void authenticateForEmployee (Principal requester){
-        if(requester == null){
-            //401 Unauthorized
-            throw new AuthenticationException();
-        }
-        if(requester.getRole().equals("ADMIN") || requester.getRole().equals("FINANCE MANAGER")){
-            //403 Forbidden
-            throw new AuthForbiddenException("You don't have permission to view reimbursement request history.");
-        }
-    }
-
 
     //---------------------------------------------------------------------------------------------------------------
     //For Exception Handler
@@ -195,17 +172,6 @@ public class ReimbursementController {
     public HashMap<String, Object> handleAuthenticationException(AuthenticationException e){
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 401);
-        responseBody.put("message", e.getMessage());
-        responseBody.put("timestamp", LocalDateTime.now());
-
-        return responseBody;
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public HashMap<String, Object> handleAuthForbiddenException(AuthForbiddenException e){
-        HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 403);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
 
