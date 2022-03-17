@@ -105,6 +105,6 @@ public class NewUserRequest {
     public User extractUser() {
         String user_id = UUID.randomUUID().toString();
         UserRole aRole = new UserRole(this.role, this.role);
-        return new User(user_id, username, email, password, givenName, surname, false, aRole);
+        return new User(username, email, password, givenName, surname);
     }
 }

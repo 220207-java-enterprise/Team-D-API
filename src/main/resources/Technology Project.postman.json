@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "5330597f-2cec-4f08-9b3a-7f19241dab0b",
+		"name": "Technology Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Manager",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "omegasdsad",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"FinancePerson\",\r\n    \"email\": \"financeEremployee2@awebsite.com\",\r\n    \"password\": \"p@$$w0rD\",\r\n    \"givenName\": \"mrfinanceperson\",\r\n    \"surname\": \"mrfinancepersonson\",\r\n    \"role\": \"MANAGER\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/technology-project/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"technology-project",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Employee",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"HandsomeDevil1\",\r\n    \"password\": \"p4$$WORD\",\r\n    \"givenName\": \"Guy\",\r\n    \"surname\": \"Dood\",\r\n    \"email\": \"handsomedevil1@gmail.com\",\r\n    \"role\": \"EMPLOYEE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/technology-project/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"technology-project",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"user_id\": \"2\",\r\n        \"active\" : \"TRUE\",\r\n        \"password\": \"p4$$Word\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/technology-project/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"technology-project",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAll Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/technology-project/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"technology-project",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Manager/Employee",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": \"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/technology-project/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"technology-project",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
