@@ -43,48 +43,49 @@ public class DummyDataInserter implements CommandLineRunner{
     @Transactional
     public void run(String... args) throws Exception {
         //Create a table for Reimbursement Status
+        //Create a table for Reimbursement Status
         ReimbursementStatus ersReimbStatus_PENDING = new ReimbursementStatus();
-        ersReimbStatus_PENDING.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_PENDING.setStatusId("1");
         ersReimbStatus_PENDING.setStatus("PENDING");
 
         ReimbursementStatus ersReimbStatus_APPROVED = new ReimbursementStatus();
-        ersReimbStatus_APPROVED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_APPROVED.setStatusId("2");
         ersReimbStatus_APPROVED.setStatus("APPROVED");
 
         ReimbursementStatus ersReimbStatus_DENIED = new ReimbursementStatus();
-        ersReimbStatus_DENIED.setStatusId(UUID.randomUUID().toString());
+        ersReimbStatus_DENIED.setStatusId("3");
         ersReimbStatus_DENIED.setStatus("DENIED");
 
         //Create a table for Reimbursement Type
         ReimbursementType ersReimbType_LODGING = new ReimbursementType();
-        ersReimbType_LODGING.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_LODGING.setTypeId("1");
         ersReimbType_LODGING.setType("LODGING");
 
         ReimbursementType ersReimbType_TRAVEL = new ReimbursementType();
-        ersReimbType_TRAVEL.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_TRAVEL.setTypeId("2");
         ersReimbType_TRAVEL.setType("TRAVEL");
 
         ReimbursementType ersReimbType_FOOD = new ReimbursementType();
-        ersReimbType_FOOD.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_FOOD.setTypeId("3");
         ersReimbType_FOOD.setType("FOOD");
 
         ReimbursementType ersReimbType_OTHER = new ReimbursementType();
-        ersReimbType_OTHER.setTypeId(UUID.randomUUID().toString());
+        ersReimbType_OTHER.setTypeId("4");
         ersReimbType_OTHER.setType("OTHER");
 
 
         //Create a table for User Role
-        UserRole ersUserRole_ADMIN = new UserRole();
-        ersUserRole_ADMIN.setRoleId(UUID.randomUUID().toString());
-        ersUserRole_ADMIN.setRole("ADMIN");
+        UserRole admin = new UserRole();
+        admin.setRoleId("1");
+        admin.setRole("ADMIN");
 
-        UserRole ersUserRole_FINANCE_MANAGER = new UserRole();
-        ersUserRole_FINANCE_MANAGER.setRoleId(UUID.randomUUID().toString());
-        ersUserRole_FINANCE_MANAGER.setRole("FINANCE MANAGER");
+        UserRole employee = new UserRole();
+        employee.setRoleId("2");
+        employee.setRole("FINANCE MANAGER");
 
-        UserRole ersUserRole_EMPLOYEE = new UserRole();
-        ersUserRole_EMPLOYEE.setRoleId(UUID.randomUUID().toString());
-        ersUserRole_EMPLOYEE.setRole("EMPLOYEE");
+        UserRole manager = new UserRole();
+        manager.setRoleId("3");
+        manager.setRole("EMPLOYEE");
 
 
         reimbursementStatusRepository.save(ersReimbStatus_PENDING);
@@ -96,22 +97,45 @@ public class DummyDataInserter implements CommandLineRunner{
         reimbursementTypeRepository.save(ersReimbType_FOOD);
         reimbursementTypeRepository.save(ersReimbType_OTHER);
 
-        userRoleRepository.save(ersUserRole_ADMIN);
-        userRoleRepository.save(ersUserRole_FINANCE_MANAGER);
-        userRoleRepository.save(ersUserRole_EMPLOYEE);
+        userRoleRepository.save(admin);
+        userRoleRepository.save(employee);
+        userRoleRepository.save(manager);
 
 
         //Create a user as ADMIN
         User ersUserADMIN = new User();
-        ersUserADMIN.setUserId(UUID.randomUUID().toString());
-        ersUserADMIN.setGivenName("ADMIN");
-        ersUserADMIN.setSurname("admin");
-        ersUserADMIN.setEmail("admin@gmail.com");
-        ersUserADMIN.setUsername("adminadmin");
-        ersUserADMIN.setPassword("Revature99?");
+        ersUserADMIN.setUserId("1");
+        ersUserADMIN.setGivenName("Abhilekh");
+        ersUserADMIN.setSurname("Adhikari");
+        ersUserADMIN.setEmail("4bhilekh@gmail.com");
+        ersUserADMIN.setUsername("4bhilekh");
+        ersUserADMIN.setPassword("p4$$WORD");
         ersUserADMIN.setIsActive(true);
-        ersUserADMIN.setRole(ersUserRole_ADMIN);
+        ersUserADMIN.setRole(admin);
 
         userRepository.save(ersUserADMIN);
+
+        User user1 = new User();
+        user1.setUserId("2");
+        user1.setGivenName("Guy");
+        user1.setSurname("Dood");
+        user1.setEmail("guydood@gmail.com");
+        user1.setUsername("HandsomeDevil");
+        user1.setPassword("p4$$WORD");
+        user1.setIsActive(true);
+        user1.setRole(new UserRole("2", "FINANCE MANAGER"));
+
+        User user2 = new User();
+        user2.setUserId("3");
+        user2.setGivenName("Lady");
+        user2.setSurname("Gal");
+        user2.setEmail("ladygal@gmail.com");
+        user2.setUsername("WonderWoman");
+        user2.setPassword("p4$$WORD");
+        user2.setIsActive(true);
+        user2.setRole(new UserRole("3", "EMPLOYEE"));
+
+        userRepository.save(user1);
+        userRepository.save(user2);
     }
 }

@@ -4,11 +4,14 @@ package com.revature.technology.controllers;
 import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewReimbursementRequest;
+import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
+import com.revature.technology.util.exceptions.AuthForbiddenException;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,34 +39,65 @@ public class ReimbursementController {
 
     //---------------------------------------------------------------------------------------------------------------
     //For Employee
-    //An authenticated employee can view and manage their pending reimbursement requests
-    //url: http://localhost:8080/technology-project/reimbursements/find-all-pending-reimbursements-by-employee
-    @GetMapping(value = "find-all-pending-reimbursements-by-employee",produces = "application/json")
+    //An authenticated employee can view their pending reimbursement requests
+    //url: http://localhost:8080/technology-project/reimbursements/employee/all-pending-reimbursements
+    @GetMapping(value = "employee/all-pending-reimbursements",produces = "application/json")
     public List<ReimbursementResponse> findAllPendingReimbursementsByEmployee(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        authenticateForEmployee(requester);
 
-        return null;
+        //EMPLOYEE can view their pending reimbursement requests
+        List<ReimbursementResponse> allPendingReimbursements = reimbursementService.findAllPendingReimbursementsByEmployee(requester);
+
+        return allPendingReimbursements;
     }
 
+    //An authenticated employee can view and manage their pending reimbursement requests
+    //url: http://localhost:8080/technology-project/reimbursements/employee/reimbursement
+    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
+    public String updatePendingReimbursementByEmployee(@RequestBody UpdatePendingReimbursementRequest updatePendingReimbursementRequest, HttpServletRequest request){
+        Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
+
+        authenticateForEmployee(requester);
+
+        return reimbursementService.updatePendingReimbursementByEmployee(updatePendingReimbursementRequest, requester);
+    }
+
+
     //An authenticated employee can view their reimbursement request history (sortable and filterable)
-    //url: http://localhost:8080/technology-project/reimbursements/find-all-reimbursements
-    @GetMapping(value = "find-all-reimbursements",produces = "application/json")
+    //url: http://localhost:8080/technology-project/reimbursements/employee/all-reimbursements
+    @GetMapping(value = "employee/all-reimbursements",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByEmployee(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
+        //EMPLOYEE can view their reimbursement request history
         List<ReimbursementResponse> allPendingReimbursements = reimbursementService.findAllReimbursementsByEmployee(requester);
+
         return allPendingReimbursements;
     }
 
     //An authenticated employee can submit a new reimbursement request
-    //url: http://localhost:8080/technology-project/reimbursements/submit-a-reimbursement
+    //url: http://localhost:8080/technology-project/reimbursements/employee/reimbursement
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "submit-a-reimbursement", produces = "application/json", consumes = "application/json")
-    public void submitNewReimbursementRequestByEmployee(@RequestBody NewReimbursementRequest newReimbursementRequest){
-        //TODO need to be implemented
+    @PostMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
+    public String submitNewReimbursementRequestByEmployee(@RequestBody NewReimbursementRequest newReimbursementRequest, HttpServletRequest request){
+        Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
+        if(newReimbursementRequest.getAmount()<0 || newReimbursementRequest.getAmount()>=10000 ||
+                newReimbursementRequest.getDescription() == null ||
+                (!newReimbursementRequest.getReimbursementType().equals("LODGING") &&
+                !newReimbursementRequest.getReimbursementType().equals("TRAVEL") &&
+                !newReimbursementRequest.getReimbursementType().equals("FOOD") &&
+                !newReimbursementRequest.getReimbursementType().equals("OTHER"))){
+            //400 BAD REQUEST
+            throw new InvalidRequestException("incorrect inputs");
+        }
+
+        authenticateForEmployee(requester);
+
+        return reimbursementService.submitNewReimbursementRequestByEmployee(newReimbursementRequest, requester);
     }
 
 
@@ -85,21 +119,37 @@ public class ReimbursementController {
     @GetMapping(value = "find-all-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        List<ReimbursementResponse> managersReimburementList =
+                reimbursementService.findAllReimbursementsByManager(requester);
 
-        return null;
+        return managersReimburementList;
     }
 
     //An authenticated finance manager can approve/deny reimbursement requests
-    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny
-    @PutMapping(value = "approve-or-deny",produces = "application/json")
-    public void handleReimbursementRequestByFinanceManager(@RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
+    //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny/<id>
+    @PutMapping(value = "approve-or-deny/{reimbId}",produces = "application/json")
+    public ReimbursementResponse approveOrDenyReimbursementByFinanceManager(@PathVariable String reimbId,
+                                                           @RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,
                                                             HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        ReimbursementResponse resolvedReimbursement = reimbursementService.resolveReimbursement(reimbId, requester,
+                approveOrDenyReimbursementRequest);
 
+        return resolvedReimbursement;
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    void authenticateForEmployee (Principal requester){
+        if(requester == null){
+            //401 Unauthorized
+            throw new AuthenticationException();
+        }
+        if(requester.getRole().equals("ADMIN") || requester.getRole().equals("FINANCE MANAGER")){
+            //403 Forbidden
+            throw new AuthForbiddenException("You don't have permission to view reimbursement request history.");
+        }
     }
 
 
@@ -121,6 +171,17 @@ public class ReimbursementController {
     public HashMap<String, Object> handleAuthenticationException(AuthenticationException e){
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 401);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public HashMap<String, Object> handleAuthForbiddenException(AuthForbiddenException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 403);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
 
