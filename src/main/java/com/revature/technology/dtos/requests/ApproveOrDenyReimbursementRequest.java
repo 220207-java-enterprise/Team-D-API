@@ -8,18 +8,11 @@ public class ApproveOrDenyReimbursementRequest {
         super();
     }
 
-    public ApproveOrDenyReimbursementRequest(String reimbursementId, boolean approve) {
-        this.reimbursementId = reimbursementId;
+    public ApproveOrDenyReimbursementRequest(boolean approve) {
         this.approve = approve;
     }
 
-    public String getReimbursementId() {
-        return reimbursementId;
-    }
 
-    public void setReimbursementId(String reimbursementId) {
-        this.reimbursementId = reimbursementId;
-    }
 
     public boolean getApprove() {
         return approve;
@@ -32,8 +25,7 @@ public class ApproveOrDenyReimbursementRequest {
     @Override
     public String toString() {
         return "ApproveOrDenyReimbursementRequest{" +
-                "reimbursementId='" + reimbursementId + '\'' +
-                ", approve=" + approve +
+                "approve=" + approve +
                 '}';
     }
 }
