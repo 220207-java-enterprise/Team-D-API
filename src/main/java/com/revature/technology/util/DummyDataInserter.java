@@ -42,7 +42,6 @@ public class DummyDataInserter implements CommandLineRunner{
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        ```
         //Create a table for Reimbursement Status
         //Create a table for Reimbursement Status
         ReimbursementStatus ersReimbStatus_PENDING = new ReimbursementStatus();
@@ -116,6 +115,17 @@ public class DummyDataInserter implements CommandLineRunner{
 
         userRepository.save(ersUserADMIN);
 
+
+        User myadmin = new User();
+        ersUserADMIN.setUserId("4");
+        ersUserADMIN.setGivenName("Hugh");
+        ersUserADMIN.setSurname("Jackman");
+        ersUserADMIN.setEmail("wolverine@gmail.com");
+        ersUserADMIN.setUsername("iamwolverine");
+        ersUserADMIN.setPassword("p4$$WORD");
+        ersUserADMIN.setIsActive(true);
+        ersUserADMIN.setRole(admin);
+
         User user1 = new User();
         user1.setUserId("2");
         user1.setGivenName("Guy");
@@ -138,5 +148,6 @@ public class DummyDataInserter implements CommandLineRunner{
 
         userRepository.save(user1);
         userRepository.save(user2);
+        userRepository.save(myadmin);
     }
 }
