@@ -143,6 +143,7 @@ public class ReimbursementService {
         Reimbursement resolvedReimbursement = new Reimbursement();
         User resolver = userRepository.getUserById(requester.getId());
 
+      
         if (approveOrDenyReimbursementRequest.getApprove()){
             resolvedReimbursement = reimbRepository.getReimbByReimbId(reimbId);
             resolvedReimbursement.setResolved(LocalDateTime.now());
