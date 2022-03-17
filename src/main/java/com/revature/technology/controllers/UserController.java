@@ -86,10 +86,10 @@ public class UserController {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public HashMap<String, Object> handleResourceConflictExceptions(ResourceConflictException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 400);
+        responseBody.put("status", 409);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
         return responseBody;
