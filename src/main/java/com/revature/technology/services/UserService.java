@@ -173,33 +173,28 @@ public class UserService {
         if (appUser.getGivenName().trim().equals("") || appUser.getSurname().trim().equals("")) {
             return false;
         }
-        System.out.println("hoaaao");
         // Usernames must be a minimum of 8 and a max of 25 characters in length, and only contain alphanumeric characters.
         if (!isUsernameValid(appUser.getUsername())) {
             return false;
         }
-        System.out.println("hoao");
         // Passwords require a minimum eight characters, at least one uppercase letter, one lowercase
         // letter, one number and one special character
         if (!isPasswordValid(appUser.getPassword())) {
             return false;
         }
-        System.out.println("hoho");
         if(!isRoleValid(appUser.getRole())) {
             return false;
         }
-        System.out.println("haa");
         if(!isEmailValid(appUser.getEmail())){
             return false;
         }
-        System.out.println("ha");
         return true;
 
     }
 
     public boolean isRoleValid(UserRole role){
         ArrayList<String> validRoles = new ArrayList<String>();
-        validRoles.add("FINANCE MANAGER");
+        validRoles.add("MANAGER");
         validRoles.add("ADMIN");
         validRoles.add("EMPLOYEE");
 

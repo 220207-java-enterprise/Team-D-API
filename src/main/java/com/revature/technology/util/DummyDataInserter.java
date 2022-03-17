@@ -78,9 +78,9 @@ public class DummyDataInserter implements CommandLineRunner{
         admin.setRoleId("1");
         admin.setRole("ADMIN");
 
-        UserRole user = new UserRole();
-        user.setRoleId("2");
-        user.setRole("EMPLOYEE");
+        UserRole employee = new UserRole();
+        employee.setRoleId("2");
+        employee.setRole("EMPLOYEE");
 
         UserRole manager = new UserRole();
         manager.setRoleId("3");
