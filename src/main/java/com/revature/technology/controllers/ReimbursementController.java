@@ -74,8 +74,7 @@ public class ReimbursementController {
     //An authenticated finance manager can view a list of all pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/find-all-pending-reimbursements-by-finance-manager
     @GetMapping(value = "find-all-pending-reimbursements-by-finance-manager",produces = "application/json")
-    public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request,
-                                                                                    HttpServletResponse response){
+    public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
         List<ReimbursementResponse> pendingReimbursementList = reimbursementService.findAllPendingReimbursement(requester);
@@ -89,9 +88,10 @@ public class ReimbursementController {
     public List<ReimbursementResponse> findAllReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
         //TODO need to be implemented
+        List<ReimbursementResponse> managersReimburementList =
+                reimbursementService.findAllReimbursementsByManager(requester);
 
-
-        return null;
+        return managersReimburementList;
     }
 
     //An authenticated finance manager can approve/deny reimbursement requests
