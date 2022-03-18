@@ -53,10 +53,14 @@ public class UserService {
     // ***********************************
     public User register(NewUserRequest newUserRequest) {
         User newUser = newUserRequest.extractUser();
-        UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
-        newUser.setRole(myRole);
-        System.out.println(newUser);
-        System.out.println(newUserRequest);
+
+        //This no longer worked after changing ADMIN role Id to 1 and so on.
+        //UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
+        //newUser.setRole(myRole);
+
+        //breadcrumb statements
+        //System.out.println(newUser);
+        //System.out.println(newUserRequest);
 
         if (!isUserValid(newUser) || newUserRequest.getRole().equals("ADMIN")) {
             throw new InvalidRequestException("Bad registration details were given.");
@@ -72,8 +76,9 @@ public class UserService {
             throw new ResourceConflictException(msg);
         }
 
+        //breadcrumb
+        //System.out.println(myRole);
 
-        System.out.println(myRole);
         newUser.setUserId(UUID.randomUUID().toString());
         newUser.setIsActive(false);
         newUser.setPassword(BCrypt.hashpw(newUserRequest.getPassword(), BCrypt.gensalt(10)));
@@ -146,19 +151,19 @@ public class UserService {
             throw new InvalidRequestException("Invalid credentials provided");
         }
 
-        User authUser = userRepository.getUserByUsername(username);
-        System.out.println(authUser);
-        if(!BCrypt.checkpw(password, authUser.getPassword()))
+        Optional<User> authUser = userRepository.getUserByUsernameAndPassword(username, password);
+        System.out.println(authUser.get());
+        if(!BCrypt.checkpw(password, authUser.get().getPassword()))
             throw new AuthenticationException();
         // Check for if user exists then check if user is active
-        if (authUser == null) {
+        if (authUser.isPresent()) {
             throw new AuthenticationException();
         }
-        if (!authUser.getIsActive()) {
+        if (!authUser.get().getIsActive()) {
             throw new ForbiddenException();
         }
 
-        return authUser;
+        return authUser.get();
     }
 
     public boolean isUserActive(String id){
