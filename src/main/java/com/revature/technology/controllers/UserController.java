@@ -5,6 +5,7 @@ import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.services.UserService;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +87,7 @@ public class UserController {
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public HashMap<String, Object> handleForbiddenException(InvalidRequestException e) {
+    public HashMap<String, Object> handleForbiddenException(ForbiddenException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 403);
         responseBody.put("message", e.getMessage());
