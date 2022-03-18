@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-@RestController // TODO associates should look into the difference between @RestController and @Controller
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
@@ -76,10 +76,19 @@ public class UserController {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public HashMap<String, Object> handleInvalidRequests(InvalidRequestException e) {
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public HashMap<String, Object> handleAuthenticationException(InvalidRequestException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 400);
+        responseBody.put("status", 401);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+        return responseBody;
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public HashMap<String, Object> handleForbiddenException(InvalidRequestException e) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 403);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
         return responseBody;

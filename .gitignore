@@ -31,3 +31,13 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# App-specific folders and files
+data/
+application.properties
