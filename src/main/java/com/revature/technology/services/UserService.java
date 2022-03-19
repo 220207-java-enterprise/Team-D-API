@@ -1,5 +1,8 @@
 package com.revature.technology.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.technology.dtos.prism.responses.AuthOrganizationPrincipal;
+import com.revature.technology.dtos.prism.responses.OrgRegistrationResponse;
 import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewUserRequest;
 import com.revature.technology.dtos.requests.UserUpdateRequest;
@@ -9,6 +12,7 @@ import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.repositories.UserRoleRepository;
 import com.revature.technology.util.exceptions.ForbiddenException;
@@ -16,6 +20,7 @@ import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,11 +34,13 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
+    private static PrismClient prismClient;
 
     @Autowired
-    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository) {
+    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository, PrismClient prismClient) {
         this.userRepository = UserRepo;
         this.userRoleRepository = userRoleRepository;
+        this.prismClient = prismClient;
     }
 
     // ***********************************
@@ -51,7 +58,7 @@ public class UserService {
     // ***********************************
     //      Register USER/Manager (ADMIN NOT ALLOWED)
     // ***********************************
-    public User register(NewUserRequest newUserRequest) {
+    public User register(NewUserRequest newUserRequest) throws JsonProcessingException {
         User newUser = newUserRequest.extractUser();
         UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
         newUser.setRole(myRole);
@@ -78,6 +85,7 @@ public class UserService {
         newUser.setIsActive(false);
         newUser.setPassword(BCrypt.hashpw(newUserRequest.getPassword(), BCrypt.gensalt(10)));
 
+        prismClient.registerNewEmployeeUsingPrism(newUser);
         userRepository.save(newUser);
 
         return newUser;
