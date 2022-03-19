@@ -91,7 +91,8 @@ public class UserService {
 
         // only Employees will be stored to Prism
         if (newUser.getRole().getRole().equals("EMPLOYEE")) {
-            prismClient.registerNewEmployeeUsingPrism(prismSetup.getAuthOrg(), newUser);
+            String payeeId = prismClient.registerNewEmployeeUsingPrism(prismSetup.getAuthOrg(), newUser);
+            newUser.setPayeeId(payeeId);
         }
         userRepository.save(newUser);
 
