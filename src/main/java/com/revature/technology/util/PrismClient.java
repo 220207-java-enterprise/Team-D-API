@@ -8,9 +8,6 @@ import com.revature.technology.dtos.prism.responses.AuthOrganizationPrincipal;
 import com.revature.technology.dtos.prism.responses.OrgRegistrationResponse;
 import com.revature.technology.dtos.prism.responses.PrismResourceCreationResponse;
 import com.revature.technology.models.User;
-import com.revature.technology.util.exceptions.ForbiddenException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,7 +26,7 @@ public class PrismClient {
     public PrismClient() {
     }
 
-    public static OrgRegistrationResponse registerNewOrganizationUsingPrism() throws JsonProcessingException {
+    public OrgRegistrationResponse registerNewOrganizationUsingPrism() throws JsonProcessingException {
         // Set content type for the request to application/json
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -41,12 +38,10 @@ public class PrismClient {
         // make the request by attaching a payload and parsing a response
         OrgRegistrationResponse response = prismClient.postForObject("http://localhost:5000/prism/organizations",
                 request, OrgRegistrationResponse.class);
-        System.out.println(response);
-
         return response;
     }
 
-    public static ResponseEntity<AuthOrganizationPrincipal> authenticateOrganizationUsingPrism(OrgRegistrationResponse orgRegistrationResponse){
+    public ResponseEntity<AuthOrganizationPrincipal> authenticateOrganizationUsingPrism(OrgRegistrationResponse orgRegistrationResponse){
 
         // Set content type for the request to application/json
         HttpHeaders headers = new HttpHeaders();
@@ -55,22 +50,17 @@ public class PrismClient {
         AuthOrganizationRequest authRequest = new AuthOrganizationRequest(orgRegistrationResponse);
 
         HttpEntity<AuthOrganizationRequest> authOrgRequest = new HttpEntity<>(authRequest, headers);
-        System.out.println("AuthRequest --> "+authOrgRequest);
 
         // make the request by attaching a payload and parsing a response
         ResponseEntity<AuthOrganizationPrincipal> authOrgResponse = prismClient.postForEntity(
                 "http://localhost:5000/prism/auth", authOrgRequest, AuthOrganizationPrincipal.class);
 
-        System.out.println("AuthResponse --> "+authOrgResponse);
 
         return authOrgResponse;
     }
 
-    public void registerNewEmployeeUsingPrism(User newUser) throws JsonProcessingException {
-
-        OrgRegistrationResponse orgRegistrationResponse = registerNewOrganizationUsingPrism();
-        ResponseEntity<AuthOrganizationPrincipal> authOrganizationPrincipal =
-                authenticateOrganizationUsingPrism(orgRegistrationResponse);
+    public void registerNewEmployeeUsingPrism(ResponseEntity<AuthOrganizationPrincipal> authOrganizationPrincipal,
+                                              User newUser) {
 
         HttpHeaders headers = authOrganizationPrincipal.getHeaders();
         System.out.println(headers);
