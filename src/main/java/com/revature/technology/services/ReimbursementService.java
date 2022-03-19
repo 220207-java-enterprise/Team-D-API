@@ -7,6 +7,7 @@ import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.models.ReimbursementStatus;
 import com.revature.technology.models.ReimbursementType;
@@ -60,7 +61,7 @@ public class ReimbursementService {
         return reimbursementResponseList;
     }
 
-    public  String updatePendingReimbursementByEmployee(UpdatePendingReimbursementRequest updatePendingReimbursementRequest, Principal requester){
+    public ResourceCreationResponse updatePendingReimbursementByEmployee(UpdatePendingReimbursementRequest updatePendingReimbursementRequest, Principal requester){
         Reimbursement reimbursement = reimbRepository.getReimbByReimbId(updatePendingReimbursementRequest.getReimbursementId());
 
         if(reimbursement == null){
@@ -77,10 +78,14 @@ public class ReimbursementService {
 
         if(updatePendingReimbursementRequest.getAmount()>0 && updatePendingReimbursementRequest.getAmount()<10000){
             reimbursement.setAmount(updatePendingReimbursementRequest.getAmount());
+        }else{
+            throw new InvalidRequestException("invalid amount");
         }
 
         if(updatePendingReimbursementRequest.getDescription() != null){
             reimbursement.setDescription(updatePendingReimbursementRequest.getDescription());
+        }else{
+            throw new InvalidRequestException("invalid description");
         }
 
         if(updatePendingReimbursementRequest.getReceipt() != null){
@@ -93,13 +98,13 @@ public class ReimbursementService {
             updatePendingReimbursementRequest.getReimbursementType().equals("OTHER")
         ){
            reimbursement.setType(reimbTypeRepository.getReimbByType(updatePendingReimbursementRequest.getReimbursementType()));
-        }else if (updatePendingReimbursementRequest.getReimbursementType() != null){
-            throw new InvalidRequestException("reimbursement type does not exist");
+        }else{
+            throw new InvalidRequestException("invalid reimbursement type");
         }
 
         reimbRepository.save(reimbursement);
 
-        return "successful update your reimbursement.";
+        return new ResourceCreationResponse(updatePendingReimbursementRequest.getReimbursementId());
     }
 
     public List<ReimbursementResponse> findAllReimbursementsByEmployee(Principal requester){
@@ -119,7 +124,7 @@ public class ReimbursementService {
         return reimbursementResponseList;
     }
 
-    public String submitNewReimbursementRequestByEmployee (NewReimbursementRequest newReimbursementRequest, Principal requester){
+    public ResourceCreationResponse submitNewReimbursementRequestByEmployee (NewReimbursementRequest newReimbursementRequest, Principal requester){
 
         if (requester == null){
             throw new NotLoggedInException();
@@ -145,7 +150,7 @@ public class ReimbursementService {
         newReimbursement.setStatus(reimbursementStatus);
 
         reimbRepository.save(newReimbursement);
-        return newReimbursementId;
+        return new ResourceCreationResponse(newReimbursementId);
     }
     //---------------------------------------------------------------------------------------
 
