@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.technology.dtos.prism.requests.AddEmployeeToOrgRequest;
 import com.revature.technology.dtos.prism.requests.AuthOrganizationRequest;
 import com.revature.technology.dtos.prism.requests.NewOrgRequest;
+import com.revature.technology.dtos.prism.requests.PostPaymentRequest;
 import com.revature.technology.dtos.prism.responses.AuthOrganizationPrincipal;
 import com.revature.technology.dtos.prism.responses.OrgRegistrationResponse;
 import com.revature.technology.dtos.prism.responses.PrismResourceCreationResponse;
+import com.revature.technology.models.Reimbursement;
 import com.revature.technology.models.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +40,8 @@ public class PrismClient {
         // make the request by attaching a payload and parsing a response
         OrgRegistrationResponse response = prismClient.postForObject("http://localhost:5000/prism/organizations",
                 request, OrgRegistrationResponse.class);
+
+        System.out.println("Org Registered--> "+response);
         return response;
     }
 
@@ -55,16 +59,15 @@ public class PrismClient {
         ResponseEntity<AuthOrganizationPrincipal> authOrgResponse = prismClient.postForEntity(
                 "http://localhost:5000/prism/auth", authOrgRequest, AuthOrganizationPrincipal.class);
 
-
+        System.out.println("Org Auth Complete --> "+authOrgResponse);
         return authOrgResponse;
     }
 
-    public void registerNewEmployeeUsingPrism(ResponseEntity<AuthOrganizationPrincipal> authOrganizationPrincipal,
+    public String registerNewEmployeeUsingPrism(ResponseEntity<AuthOrganizationPrincipal> authOrganizationPrincipal,
                                               User newUser) {
 
         HttpHeaders headers = authOrganizationPrincipal.getHeaders();
-        System.out.println(headers);
-        System.out.println(authOrganizationPrincipal);
+        System.out.println("Org token--> "+headers);
 
         AddEmployeeToOrgRequest addEmployeeRequestObject = new AddEmployeeToOrgRequest(newUser.getGivenName(), newUser.getSurname(),
                 newUser.getEmail(), new AddEmployeeToOrgRequest.AccountInfo(
@@ -77,11 +80,29 @@ public class PrismClient {
         ResponseEntity<PrismResourceCreationResponse> addEmployeeResponse = prismClient.postForEntity(
                 "http://localhost:5000/prism/employees", addEmployeeToOrgRequestHttpEntity,
                 PrismResourceCreationResponse.class);
+
+        String payeeId = addEmployeeResponse.getBody().getResourceId();
+        System.out.println("PayeeId---->"+payeeId);
+        return payeeId;
     }
 
-    public void postPaymentUsingPrism(){
-        // the payeeId and paymentAmount will be posted to Payment (prism)
-        // TODO call this method in resolveReimbursement() method
+    public String postPaymentUsingPrism(ResponseEntity<AuthOrganizationPrincipal> authOrganizationPrincipal,
+                                      User employee, Reimbursement reimbursement){
 
+        HttpHeaders headers = authOrganizationPrincipal.getHeaders();
+        System.out.println("Org token--> "+headers);
+
+        PostPaymentRequest postPaymentRequest = new PostPaymentRequest(employee.getPayeeId(),
+                reimbursement.getAmount());
+
+        HttpEntity<PostPaymentRequest> postPaymentRequestHttpEntity = new HttpEntity<>(postPaymentRequest, headers);
+
+        ResponseEntity<PrismResourceCreationResponse> postPaymentResponse = prismClient.postForEntity(
+                "http://localhost:5000/prism/payments", postPaymentRequestHttpEntity,
+                PrismResourceCreationResponse.class);
+
+        String paymentId = postPaymentResponse.getBody().getResourceId();
+
+        return paymentId;
     }
 }
