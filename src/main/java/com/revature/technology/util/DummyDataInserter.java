@@ -12,6 +12,7 @@ import com.revature.technology.repositories.ReimbTypeRepository;
 import com.revature.technology.repositories.UserRepository;
 import com.revature.technology.repositories.UserRoleRepository;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -109,7 +110,7 @@ public class DummyDataInserter implements CommandLineRunner{
         ersUserADMIN.setSurname("Adhikari");
         ersUserADMIN.setEmail("4bhilekh@gmail.com");
         ersUserADMIN.setUsername("4bhilekh");
-        ersUserADMIN.setPassword("p4$$WORD");
+        ersUserADMIN.setPassword(BCrypt.hashpw("p4$$WORD", BCrypt.gensalt(10)));
         ersUserADMIN.setIsActive(true);
         ersUserADMIN.setRole(admin);
 
@@ -122,7 +123,7 @@ public class DummyDataInserter implements CommandLineRunner{
         myadmin.setSurname("Jackman");
         myadmin.setEmail("wolverine@gmail.com");
         myadmin.setUsername("iamwolverine");
-        myadmin.setPassword("p4$$WORD");
+        myadmin.setPassword(BCrypt.hashpw("p4$$WORD", BCrypt.gensalt(10)));
         myadmin.setIsActive(true);
         myadmin.setRole(new UserRole("1", "ADMIN"));
 
@@ -132,7 +133,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user1.setSurname("Dood");
         user1.setEmail("guydood@gmail.com");
         user1.setUsername("HandsomeDevil");
-        user1.setPassword("p4$$WORD");
+        user1.setPassword(BCrypt.hashpw("p4$$WORD", BCrypt.gensalt(10)));
         user1.setIsActive(true);
         user1.setRole(new UserRole("2", "FINANCE MANAGER"));
 
@@ -142,7 +143,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user2.setSurname("Gal");
         user2.setEmail("ladygal@gmail.com");
         user2.setUsername("WonderWoman");
-        user2.setPassword("p4$$WORD");
+        user2.setPassword(BCrypt.hashpw("p4$$WORD", BCrypt.gensalt(10)));
         user2.setIsActive(true);
         user2.setRole(new UserRole("3", "EMPLOYEE"));
 
