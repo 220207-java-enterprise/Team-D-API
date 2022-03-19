@@ -146,7 +146,7 @@ public class DummyDataInserter implements CommandLineRunner{
         myadmin.setUsername("iamwolverine");
         myadmin.setPassword("p4$$WORD");
         myadmin.setIsActive(true);
-        myadmin.setRole(admin);
+        myadmin.setRole(new UserRole("1","ADMIN"));
 
         User user1 = new User();
         user1.setUserId("2");
