@@ -1,5 +1,8 @@
 package com.revature.technology.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.revature.technology.dtos.prism.responses.AuthOrganizationPrincipal;
+import com.revature.technology.dtos.prism.responses.OrgRegistrationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.models.ReimbursementStatus;
 import com.revature.technology.models.ReimbursementType;
@@ -14,6 +17,8 @@ import com.revature.technology.repositories.UserRoleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,14 +34,31 @@ public class DummyDataInserter implements CommandLineRunner{
     private final ReimbTypeRepository reimbursementTypeRepository;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final PrismClient prismClient;
+
+    private final OrgRegistrationResponse principalOrg;
+    private final ResponseEntity<AuthOrganizationPrincipal> authOrg;
 
     @Autowired
-    public DummyDataInserter(ReimbRepository reimbursementRepository, ReimbStatusRepository reimbursementStatusRepository, ReimbTypeRepository reimbursementTypeRepository, UserRepository userRepository, UserRoleRepository userRoleRepository) {
+    public DummyDataInserter(ReimbRepository reimbursementRepository,
+                             ReimbStatusRepository reimbursementStatusRepository,
+                             ReimbTypeRepository reimbursementTypeRepository, UserRepository userRepository,
+                             UserRoleRepository userRoleRepository, PrismClient prismClient) throws JsonProcessingException {
         this.reimbursementRepository = reimbursementRepository;
         this.reimbursementStatusRepository = reimbursementStatusRepository;
         this.reimbursementTypeRepository = reimbursementTypeRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.prismClient = prismClient;
+
+        // prism setup
+        this.principalOrg = prismClient.registerNewOrganizationUsingPrism();
+        this.authOrg = prismClient.authenticateOrganizationUsingPrism(principalOrg);
+    }
+
+    // will be used in UserService everytime a new user is registered
+    public ResponseEntity<AuthOrganizationPrincipal> getAuthOrg() {
+        return authOrg;
     }
 
     @Override
@@ -117,14 +139,14 @@ public class DummyDataInserter implements CommandLineRunner{
 
 
         User myadmin = new User();
-        ersUserADMIN.setUserId("4");
-        ersUserADMIN.setGivenName("Hugh");
-        ersUserADMIN.setSurname("Jackman");
-        ersUserADMIN.setEmail("wolverine@gmail.com");
-        ersUserADMIN.setUsername("iamwolverine");
-        ersUserADMIN.setPassword("p4$$WORD");
-        ersUserADMIN.setIsActive(true);
-        ersUserADMIN.setRole(admin);
+        myadmin.setUserId("4");
+        myadmin.setGivenName("Hugh");
+        myadmin.setSurname("Jackman");
+        myadmin.setEmail("wolverine@gmail.com");
+        myadmin.setUsername("iamwolverine");
+        myadmin.setPassword("p4$$WORD");
+        myadmin.setIsActive(true);
+        myadmin.setRole(admin);
 
         User user1 = new User();
         user1.setUserId("2");
