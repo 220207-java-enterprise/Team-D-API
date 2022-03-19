@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin
 @RestController // TODO associates should look into the difference between @RestController and @Controller
 @RequestMapping("/users")
 public class UserController {
