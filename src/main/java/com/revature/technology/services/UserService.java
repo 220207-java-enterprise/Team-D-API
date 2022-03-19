@@ -12,6 +12,7 @@ import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.DummyDataInserter;
 import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.repositories.UserRoleRepository;
@@ -35,12 +36,15 @@ public class UserService {
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
     private static PrismClient prismClient;
+    private static DummyDataInserter prismSetup;
 
     @Autowired
-    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository, PrismClient prismClient) {
+    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository, PrismClient prismClient,
+                       DummyDataInserter prismSetup) {
         this.userRepository = UserRepo;
         this.userRoleRepository = userRoleRepository;
         this.prismClient = prismClient;
+        this.prismSetup = prismSetup;
     }
 
     // ***********************************
@@ -85,7 +89,10 @@ public class UserService {
         newUser.setIsActive(false);
         newUser.setPassword(BCrypt.hashpw(newUserRequest.getPassword(), BCrypt.gensalt(10)));
 
-        prismClient.registerNewEmployeeUsingPrism(newUser);
+        // only Employees will be stored to Prism
+        if (newUser.getRole().getRole().equals("EMPLOYEE")) {
+            prismClient.registerNewEmployeeUsingPrism(prismSetup.getAuthOrg(), newUser);
+        }
         userRepository.save(newUser);
 
         return newUser;
