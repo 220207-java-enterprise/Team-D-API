@@ -8,6 +8,7 @@ import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
 
 import com.revature.technology.repositories.UserRoleRepository;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.junit.jupiter.api.Assertions;
@@ -28,14 +29,16 @@ public class UserServiceTest {
     private UserService sut;
     private UserRepository mockUserRepository;
     private UserRoleRepository mockUserRoleRepository;
+    private PrismClient mockPrismClient;
 
 
     @BeforeEach
     public void setup(){
         mockUserRoleRepository = mock(UserRoleRepository.class);
         mockUserRepository = mock(UserRepository.class);
+        mockPrismClient = mock(PrismClient.class);
 
-        sut = new UserService(mockUserRepository, mockUserRoleRepository);
+        sut = new UserService(mockUserRepository, mockUserRoleRepository, mockPrismClient);
     }
 
     @Test
