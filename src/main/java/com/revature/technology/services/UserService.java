@@ -151,12 +151,12 @@ public class UserService {
             throw new InvalidRequestException("Invalid credentials provided");
         }
 
-        Optional<User> authUser = userRepository.getUserByUsernameAndPassword(username, password);
-        System.out.println(authUser.get());
-        if(!BCrypt.checkpw(password, authUser.get().getPassword()))
+        Optional<User> authUser = userRepository.getUserByUsername(username);
+        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
             throw new AuthenticationException();
+        }
         // Check for if user exists then check if user is active
-        if (authUser.isPresent()) {
+        if (!authUser.isPresent()) {
             throw new AuthenticationException();
         }
         if (!authUser.get().getIsActive()) {
@@ -223,7 +223,7 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return userRepository.getUserByUsername(username) == null;
+       return !userRepository.getUserByUsername(username).isPresent();
     }
 
     public boolean isEmailAvailable(String email) {

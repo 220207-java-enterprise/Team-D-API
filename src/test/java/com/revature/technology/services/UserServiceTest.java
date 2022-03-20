@@ -201,7 +201,8 @@ public class UserServiceTest {
     public void test_isUsernameAvailable_givenDuplicateUsername(){
         // Arrange
         String username = "4bhilekh";
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> emptyUser = Optional.of(new User());
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(emptyUser);
         // Act
         boolean result = sut.isUsernameAvailable(username);
 
@@ -253,7 +254,8 @@ public class UserServiceTest {
         String username = duplicateUserToSave.getUsername();
         String email = duplicateUserToSave.getEmail();
 
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> empty = Optional.empty();
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
         when(mockUserRepository.getUserByEmail(email)).thenReturn(new User());
 
         try {
@@ -307,12 +309,13 @@ public class UserServiceTest {
         when(spiedSut.isUsernameValid(username)).thenReturn(true);
         when(spiedSut.isPasswordValid(password)).thenReturn(true);
         // How can I return a potentialUser (containing the hashed password?)
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> empty = Optional.empty();
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
 
         if(loginRequest.getPassword().equals(loginRequest.getPassword())) {
-            User authUser = mockUserRepository.getUserByUsername(username);
+            Optional<User> authUser = mockUserRepository.getUserByUsername(username);
             // Assert
-            Assertions.assertNotNull(authUser);
+            Assertions.assertFalse(authUser.isPresent());
         }
     }
 
