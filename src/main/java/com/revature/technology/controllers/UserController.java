@@ -59,6 +59,7 @@ public class UserController {
 
 
     // Register as User/Manager
+    @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = "application/json", consumes = "application/json")
     public HashMap<String, Object> register(@RequestBody NewUserRequest newUserRequest) throws JsonProcessingException {
