@@ -15,6 +15,8 @@ import com.revature.technology.repositories.ReimbRepository;
 import com.revature.technology.repositories.ReimbStatusRepository;
 import com.revature.technology.repositories.ReimbTypeRepository;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.DummyDataInserter;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.NotLoggedInException;
@@ -35,12 +37,19 @@ public class ReimbursementService {
     ReimbTypeRepository reimbTypeRepository;
     ReimbStatusRepository reimbStatusRepository;
 
+    private static PrismClient prismClient;
+    private static DummyDataInserter prismSetup;
+
     @Autowired
-    public ReimbursementService(ReimbRepository reimbRepository, UserRepository userRepository,ReimbTypeRepository reimbTypeRepository, ReimbStatusRepository reimbStatusRepository) {
+    public ReimbursementService(ReimbRepository reimbRepository, UserRepository userRepository,ReimbTypeRepository reimbTypeRepository,
+                                ReimbStatusRepository reimbStatusRepository, PrismClient prismClient,
+                                DummyDataInserter prismSetup) {
         this.reimbRepository = reimbRepository;
         this.userRepository = userRepository;
         this.reimbTypeRepository = reimbTypeRepository;
         this.reimbStatusRepository = reimbStatusRepository;
+        this.prismClient = prismClient;
+        this.prismSetup = prismSetup;
     }
 
     //For Employee ---------------------------------------------------------------------------------------
@@ -280,6 +289,11 @@ public class ReimbursementService {
             resolvedReimbursement.setResolved(LocalDateTime.now());
             resolvedReimbursement.setResolverUser(resolver);
             resolvedReimbursement.setStatus(new ReimbursementStatus("2","APPROVED"));
+
+            String paymentId = prismClient.postPaymentUsingPrism(prismSetup.getAuthOrg(),
+                    resolvedReimbursement.getAuthorUser(), resolvedReimbursement);
+
+            resolvedReimbursement.setPaymentId(paymentId);
             reimbRepository.save(resolvedReimbursement);
 
             ReimbursementResponse reimbursementResponse = new ReimbursementResponse(

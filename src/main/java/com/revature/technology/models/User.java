@@ -7,6 +7,16 @@ import javax.persistence.*;
 @Table(name="ers_users")
 public class User {
 
+    // for Prism, posting payments
+    private String payeeId;
+
+    public void setPayeeId(String payeeId) {
+        this.payeeId = payeeId;
+    }
+
+    public String getPayeeId() {
+        return payeeId;
+    }
 
     @Id
     @Column(name="user_id")
@@ -132,6 +142,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", isActive=" + isActive +
                 ", role=" + role +
+                ", payeeId=" + payeeId +
                 '}';
     }
 
