@@ -121,8 +121,12 @@ public class UserService {
             newUser.setGivenName(userUpdate.getGiven_name());
         if(userUpdate.getEmail() != null)
             newUser.setEmail(userUpdate.getEmail());
-        if(userUpdate.getUsername() != null)
+        if(userUpdate.getUsername() != null) {
+            if (!isUserValid(newUser)){
+                throw new InvalidRequestException("Bad update details were given.");
+            }
             newUser.setUsername(userUpdate.getUsername());
+        }
         if(userUpdate.getPassword() != null) {
             newUser.setPassword(userUpdate.getPassword());
             if (!isUserValid(newUser)){
