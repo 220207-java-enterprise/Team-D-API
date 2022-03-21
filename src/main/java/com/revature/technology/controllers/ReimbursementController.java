@@ -9,6 +9,7 @@ import com.revature.technology.dtos.responses.ReimbursementResponse;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,7 +159,16 @@ public class ReimbursementController {
         responseBody.put("status", 401);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
+        return responseBody;
+    }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public HashMap<String, Object> handleForbiddenException(ForbiddenException e) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 403);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
         return responseBody;
     }
 
