@@ -1,4 +1,5 @@
 package com.revature.technology.controllers;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.technology.dtos.requests.NewUserRequest;
 import com.revature.technology.dtos.requests.UserUpdateRequest;
 import com.revature.technology.dtos.responses.ResourceCreationResponse;
@@ -61,9 +62,10 @@ public class UserController {
 
 
     // Register as User/Manager
+    @CrossOrigin
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = "application/json", consumes = "application/json")
-    public HashMap<String, Object> register(@RequestBody NewUserRequest newUserRequest){
+    public HashMap<String, Object> register(@RequestBody NewUserRequest newUserRequest) throws JsonProcessingException {
         HashMap<String, Object> userList = new HashMap<String, Object>();
 
         User newUser = userService.register(newUserRequest);
@@ -81,6 +83,16 @@ public class UserController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public HashMap<String, Object> handleAuthenticationException(InvalidRequestException e) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 400);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+        return responseBody;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public HashMap<String, Object> handleInvalidRequests(InvalidRequestException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
         responseBody.put("status", 401);
         responseBody.put("message", e.getMessage());
