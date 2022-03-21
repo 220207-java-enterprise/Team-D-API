@@ -28,7 +28,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @CrossOrigin
+    @CrossOrigin(exposedHeaders = "authorization")
     @PostMapping(produces = "application/json", consumes = "application/json")
     public Principal login(@RequestBody LoginRequest request, HttpServletResponse response) {
         Principal principal = new Principal(userService.login(request));
