@@ -58,14 +58,14 @@ public class User {
         this.isActive = isActive;
         this.role = role;
     }
-
-    public User(String username, String email, String password, String givenName, String surname) {
+  //I am not sure what the purpose of this constructor is.
+  /*  public User(String username, String email, String password, String givenName, String surname) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.givenName = givenName;
         this.surname = surname;
-    }
+    }*/
 
     public String getUserId() {
         return userId;
