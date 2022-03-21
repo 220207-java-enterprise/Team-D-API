@@ -6,6 +6,7 @@ import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.services.UserService;
+import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
@@ -32,8 +33,8 @@ public class UserController {
 
 
     // Admin get all users
-    @Secured(allowedRoles = "ADMIN")
     @CrossOrigin
+    @Secured(allowedRoles = "ADMIN")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public HashMap<String, Object> getAllUsers() {
@@ -83,9 +84,9 @@ public class UserController {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public HashMap<String, Object> handleAuthenticationException(InvalidRequestException e) {
+    public HashMap<String, Object> handleAuthenticationException(AuthenticationException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 400);
+        responseBody.put("status", 401);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
         return responseBody;
@@ -95,7 +96,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleInvalidRequests(InvalidRequestException e) {
         HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 401);
+        responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
         return responseBody;

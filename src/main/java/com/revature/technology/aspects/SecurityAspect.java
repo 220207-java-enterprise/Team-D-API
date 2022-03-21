@@ -14,6 +14,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -37,7 +38,6 @@ public class SecurityAspect {
     public void setSecurityContext(SecurityContext securityContext) {
         this.securityContext = securityContext;
     }
-
     @Before("@annotation(com.revature.technology.util.security.Secured)")
     public void secureEndpoint(JoinPoint jp) {
         MethodSignature sig = (MethodSignature) jp.getSignature();
@@ -45,7 +45,7 @@ public class SecurityAspect {
         Secured myAnnotation = method.getAnnotation(Secured.class);
 
 
-        Principal requester = tokenService.extractRequesterDetails(getCurrentRequest().getHeader("Authorization"));
+        Principal requester = tokenService.extractRequesterDetails(getCurrentRequest().getHeader("authorization"));
         if (requester != null) {
             for (String myRole : myAnnotation.allowedRoles()) {
                 if (Objects.equals(myRole, requester.getRole())) {

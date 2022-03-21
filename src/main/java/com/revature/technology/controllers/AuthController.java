@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
+
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -40,7 +42,7 @@ public class AuthController {
 //        }
 
         String token = tokenService.generateToken(principal);
-        response.setHeader("Authorization", token);
+        response.setHeader("authorization", token);
         response.setStatus(201);
 
         System.out.println(principal);
