@@ -6,6 +6,7 @@ import com.revature.technology.dtos.requests.NewReimbursementRequest;
 import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
@@ -53,7 +54,7 @@ public class ReimbursementController {
     @Secured(allowedRoles = "EMPLOYEE")
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
-    public String updatePendingReimbursementByEmployee(@RequestBody UpdatePendingReimbursementRequest updatePendingReimbursementRequest, HttpServletRequest request){
+    public ResourceCreationResponse updatePendingReimbursementByEmployee(@RequestBody UpdatePendingReimbursementRequest updatePendingReimbursementRequest, HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
         return reimbursementService.updatePendingReimbursementByEmployee(updatePendingReimbursementRequest, requester);
@@ -78,7 +79,7 @@ public class ReimbursementController {
     @Secured(allowedRoles = "EMPLOYEE")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
-    public String submitNewReimbursementRequestByEmployee(@RequestBody NewReimbursementRequest newReimbursementRequest, HttpServletRequest request){
+    public ResourceCreationResponse submitNewReimbursementRequestByEmployee(@RequestBody NewReimbursementRequest newReimbursementRequest, HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
 
         if(newReimbursementRequest.getAmount()<0 || newReimbursementRequest.getAmount()>=10000 ||
@@ -88,7 +89,7 @@ public class ReimbursementController {
                 !newReimbursementRequest.getReimbursementType().equals("FOOD") &&
                 !newReimbursementRequest.getReimbursementType().equals("OTHER"))){
             //400 BAD REQUEST
-            throw new InvalidRequestException("incorrect inputs");
+            throw new InvalidRequestException("invalid inputs");
         }
 
 
