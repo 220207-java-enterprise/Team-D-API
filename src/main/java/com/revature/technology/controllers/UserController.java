@@ -8,6 +8,7 @@ import com.revature.technology.services.UserService;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
+import com.revature.technology.util.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class UserController {
 
 
     // Admin get all users
+    @Secured(allowedRoles = "ADMIN")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public HashMap<String, Object> getAllUsers() {
@@ -42,8 +44,7 @@ public class UserController {
     }
 
 
-    //TODO security
-    // Admin update user
+    @Secured(allowedRoles = "ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(produces = "application/json", consumes = "application/json")
     public void update(@RequestBody UserUpdateRequest userUpdateRequest) {
@@ -51,6 +52,7 @@ public class UserController {
     }
 
     // Admin "Delete" user
+    @Secured(allowedRoles = "ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(produces = "application/json", consumes = "application/json")
     public void delete(@RequestBody UserUpdateRequest userUpdateRequest) {

@@ -10,6 +10,7 @@ import com.revature.technology.services.ReimbursementService;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.security.Secured;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class ReimbursementController {
     //For Employee
     //An authenticated employee can view their pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/employee/all-pending-reimbursements
+    @Secured(allowedRoles = "EMPLOYEE")
     @GetMapping(value = "employee/all-pending-reimbursements",produces = "application/json")
     public List<ReimbursementResponse> findAllPendingReimbursementsByEmployee(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
@@ -47,6 +49,7 @@ public class ReimbursementController {
 
     //An authenticated employee can view and manage their pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/employee/reimbursement
+    @Secured(allowedRoles = "EMPLOYEE")
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
     public String updatePendingReimbursementByEmployee(@RequestBody UpdatePendingReimbursementRequest updatePendingReimbursementRequest, HttpServletRequest request){
@@ -58,6 +61,7 @@ public class ReimbursementController {
 
     //An authenticated employee can view their reimbursement request history (sortable and filterable)
     //url: http://localhost:8080/technology-project/reimbursements/employee/all-reimbursements
+    @Secured(allowedRoles = "EMPLOYEE")
     @GetMapping(value = "employee/all-reimbursements",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByEmployee(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
@@ -70,6 +74,7 @@ public class ReimbursementController {
 
     //An authenticated employee can submit a new reimbursement request
     //url: http://localhost:8080/technology-project/reimbursements/employee/reimbursement
+    @Secured(allowedRoles = "EMPLOYEE")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
     public String submitNewReimbursementRequestByEmployee(@RequestBody NewReimbursementRequest newReimbursementRequest, HttpServletRequest request){
@@ -94,6 +99,7 @@ public class ReimbursementController {
     //For Finance Manager
     //An authenticated finance manager can view a list of all pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/find-all-pending-reimbursements-by-finance-manager
+    @Secured(allowedRoles = "FINANCE MANAGER")
     @GetMapping(value = "find-all-pending-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
@@ -105,6 +111,7 @@ public class ReimbursementController {
 
     //An authenticated finance manager can view a history of requests that they have approved/denied
     //url: http://localhost:8080/technology-project/reimbursements/find-all-reimbursements-by-finance-manager
+    @Secured(allowedRoles = "FINANCE MANAGER")
     @GetMapping(value = "find-all-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
@@ -117,6 +124,7 @@ public class ReimbursementController {
 
     //An authenticated finance manager can approve/deny reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/approve-or-deny/<id>
+    @Secured(allowedRoles = "FINANCE MANAGER")
     @PutMapping(value = "approve-or-deny/{reimbId}",produces = "application/json")
     public ReimbursementResponse approveOrDenyReimbursementByFinanceManager(@PathVariable String reimbId,
                                                            @RequestBody ApproveOrDenyReimbursementRequest approveOrDenyReimbursementRequest,

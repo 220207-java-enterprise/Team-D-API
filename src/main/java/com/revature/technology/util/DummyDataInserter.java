@@ -109,7 +109,7 @@ public class DummyDataInserter implements CommandLineRunner{
         ersUserADMIN.setSurname("Adhikari");
         ersUserADMIN.setEmail("4bhilekh@gmail.com");
         ersUserADMIN.setUsername("4bhilekh");
-        ersUserADMIN.setPassword("p4$$WORD");
+        ersUserADMIN.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         ersUserADMIN.setIsActive(true);
         ersUserADMIN.setRole(admin);
 
@@ -122,7 +122,7 @@ public class DummyDataInserter implements CommandLineRunner{
         myadmin.setSurname("Jackman");
         myadmin.setEmail("wolverine@gmail.com");
         myadmin.setUsername("iamwolverine");
-        myadmin.setPassword("p4$$WORD");
+        myadmin.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         myadmin.setIsActive(true);
         myadmin.setRole(new UserRole("1", "ADMIN"));
 
@@ -132,7 +132,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user1.setSurname("Dood");
         user1.setEmail("guydood@gmail.com");
         user1.setUsername("HandsomeDevil");
-        user1.setPassword("p4$$WORD");
+        user1.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user1.setIsActive(true);
         user1.setRole(new UserRole("2", "FINANCE MANAGER"));
 
@@ -142,7 +142,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user2.setSurname("Gal");
         user2.setEmail("ladygal@gmail.com");
         user2.setUsername("WonderWoman");
-        user2.setPassword("p4$$WORD");
+        user2.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user2.setIsActive(true);
         user2.setRole(new UserRole("3", "EMPLOYEE"));
 

@@ -1,8 +1,13 @@
 package com.revature.technology.util.exceptions;
 
-public class AuthenticationException extends ResourceNotFoundException{
+public class AuthenticationException extends ResourceNotFoundException {
 
-    public AuthenticationException(){
-        super("No user found using the provided credentials");
+    public AuthenticationException() {
+        super("No user found using the provided credentials.");
     }
+
+    public AuthenticationException(String msg){
+        super(msg);
+    }
+
 }
