@@ -30,6 +30,7 @@ public class UserController {
 
 
     // Admin get all users
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public HashMap<String, Object> getAllUsers() {
