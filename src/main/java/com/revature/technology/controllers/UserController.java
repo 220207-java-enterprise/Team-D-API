@@ -33,6 +33,7 @@ public class UserController {
 
     // Admin get all users
     @Secured(allowedRoles = "ADMIN")
+    @CrossOrigin
     @ResponseStatus(HttpStatus.OK)
     @GetMapping()
     public HashMap<String, Object> getAllUsers() {
