@@ -1,13 +1,9 @@
 package com.revature.technology.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.revature.technology.dtos.prism.responses.AuthOrganizationPrincipal;
-import com.revature.technology.dtos.prism.responses.OrgRegistrationResponse;
 import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewUserRequest;
 import com.revature.technology.dtos.requests.UserUpdateRequest;
-import com.revature.technology.dtos.responses.Principal;
-import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
@@ -21,13 +17,10 @@ import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -103,7 +96,7 @@ public class UserService {
     //      ADMIN UPDATE USER
     // ***********************************
     public void updateUser(UserUpdateRequest userUpdate){
-        User newUser = userRepository.getUserById(userUpdate.getUser_id());
+        User newUser = userRepository.getUserById(userUpdate.getUserId());
         if (newUser.getRole().getRole().equals("ADMIN"))
             throw new InvalidRequestException("Cannot remove admin");
 
@@ -144,7 +137,7 @@ public class UserService {
     //      ADMIN "DELETE" USER
     // ***********************************
     public void deleteUser(UserUpdateRequest userUpdate){
-        User newUser = userRepository.getUserById(userUpdate.getUser_id());
+        User newUser = userRepository.getUserById(userUpdate.getUserId());
         if (newUser.getRole().getRole().equals("ADMIN"))
             throw new InvalidRequestException("Cannot delete admin");
 

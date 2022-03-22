@@ -47,6 +47,7 @@ public class UserController {
     }
 
 
+    @CrossOrigin
     @Secured(allowedRoles = "ADMIN")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(produces = "application/json", consumes = "application/json")
