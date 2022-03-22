@@ -125,51 +125,203 @@ public class DummyDataInserter implements CommandLineRunner{
 
 
         //Create a user as ADMIN
-        User ersUserADMIN = new User();
-        ersUserADMIN.setUserId("1");
-        ersUserADMIN.setGivenName("Abhilekh");
-        ersUserADMIN.setSurname("Adhikari");
-        ersUserADMIN.setEmail("4bhilekh@gmail.com");
-        ersUserADMIN.setUsername("4bhilekh");
-        ersUserADMIN.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
-        ersUserADMIN.setIsActive(true);
-        ersUserADMIN.setRole(admin);
+        User ersUserAdmin = new User();
+        ersUserAdmin.setUserId("1");
+        ersUserAdmin.setGivenName("Super");
+        ersUserAdmin.setSurname("Admin");
+        ersUserAdmin.setEmail("admin@revature.com");
+        ersUserAdmin.setUsername("superadmin");
+        ersUserAdmin.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        ersUserAdmin.setIsActive(true);
+        ersUserAdmin.setRole(admin);
+        userRepository.save(ersUserAdmin);
 
-        userRepository.save(ersUserADMIN);
-
-
-        User myadmin = new User();
-        myadmin.setUserId("4");
-        myadmin.setGivenName("Hugh");
-        myadmin.setSurname("Jackman");
-        myadmin.setEmail("wolverine@gmail.com");
-        myadmin.setUsername("iamwolverine");
-        myadmin.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
-        myadmin.setIsActive(true);
-        myadmin.setRole(new UserRole("1", "ADMIN"));
+        User ersUserFinanceManager = new User();
+        ersUserFinanceManager.setUserId(UUID.randomUUID().toString());
+        ersUserFinanceManager.setGivenName("Wezley");
+        ersUserFinanceManager.setSurname("Singleton");
+        ersUserFinanceManager.setEmail("wezleysingleton@revature.com");
+        ersUserFinanceManager.setUsername("wezleysingleton");
+        ersUserFinanceManager.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        ersUserFinanceManager.setIsActive(true);
+        ersUserFinanceManager.setRole(manager);
+        userRepository.save(ersUserFinanceManager);
 
         User user1 = new User();
-        user1.setUserId("2");
-        user1.setGivenName("Guy");
-        user1.setSurname("Dood");
-        user1.setEmail("guydood@gmail.com");
-        user1.setUsername("HandsomeDevil");
+        user1.setUserId(UUID.randomUUID().toString());
+        user1.setGivenName("Ryan");
+        user1.setSurname("Odeneal");
+        user1.setEmail("ryanodeneal@revature.net");
+        user1.setUsername("ryanodeneal");
         user1.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user1.setIsActive(true);
-        user1.setRole(new UserRole("2", "FINANCE MANAGER"));
+        user1.setRole(employee);
+        userRepository.save(user1);
 
         User user2 = new User();
-        user2.setUserId("3");
-        user2.setGivenName("Lady");
-        user2.setSurname("Gal");
-        user2.setEmail("ladygal@gmail.com");
-        user2.setUsername("WonderWoman");
+        user2.setUserId(UUID.randomUUID().toString());
+        user2.setGivenName("Zhenying");
+        user2.setSurname("Chen");
+        user2.setEmail("zhenyingchen@revature.net");
+        user2.setUsername("zhenyingchen");
         user2.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user2.setIsActive(true);
-        user2.setRole(new UserRole("3", "EMPLOYEE"));
-
-        userRepository.save(user1);
+        user2.setRole(employee);
         userRepository.save(user2);
-        userRepository.save(myadmin);
+
+        User user3 = new User();
+        user3.setUserId(UUID.randomUUID().toString());
+        user3.setGivenName("Adam");
+        user3.setSurname("Lyn");
+        user3.setEmail("adamlyn@revature.net");
+        user3.setUsername("adamlyn");
+        user3.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user3.setIsActive(true);
+        user3.setRole(employee);
+        userRepository.save(user3);
+
+        User user4 = new User();
+        user4.setUserId(UUID.randomUUID().toString());
+        user4.setGivenName("Abhilekh");
+        user4.setSurname("Adhikari");
+        user4.setEmail("abhilekhadhikari@revature.net");
+        user4.setUsername("abhilekhadhikari");
+        user4.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user4.setIsActive(true);
+        user4.setRole(employee);
+        userRepository.save(user4);
+
+        User user5 = new User();
+        user5.setUserId(UUID.randomUUID().toString());
+        user5.setGivenName("Aidan");
+        user5.setSurname("Amato");
+        user5.setEmail("aidanamato@revature.net");
+        user5.setUsername("aidanamato");
+        user5.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user5.setIsActive(true);
+        user5.setRole(employee);
+        userRepository.save(user5);
+
+        User user6 = new User();
+        user6.setUserId(UUID.randomUUID().toString());
+        user6.setGivenName("Aidan");
+        user6.setSurname("Arnold");
+        user6.setEmail("aidanarnold@revature.net");
+        user6.setUsername("aidanarnold");
+        user6.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user6.setIsActive(true);
+        user6.setRole(employee);
+        userRepository.save(user6);
+
+        User user7 = new User();
+        user7.setUserId(UUID.randomUUID().toString());
+        user7.setGivenName("Aiza");
+        user7.setSurname("Weber");
+        user7.setEmail("aizaweber@revature.net");
+        user7.setUsername("aizaweber");
+        user7.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user7.setIsActive(true);
+        user7.setRole(employee);
+        userRepository.save(user7);
+
+        User user8 = new User();
+        user8.setUserId(UUID.randomUUID().toString());
+        user8.setGivenName("Ajitesh");
+        user8.setSurname("Vedula");
+        user8.setEmail("ajiteshvedula@revature.net");
+        user8.setUsername("ajiteshvedula");
+        user8.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user8.setIsActive(true);
+        user8.setRole(employee);
+        userRepository.save(user8);
+
+        User user9 = new User();
+        user9.setUserId(UUID.randomUUID().toString());
+        user9.setGivenName("Amelia");
+        user9.setSurname("DePew");
+        user9.setEmail("ameliadepew@revature.net");
+        user9.setUsername("ameliadepew");
+        user9.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user9.setIsActive(true);
+        user9.setRole(employee);
+        userRepository.save(user9);
+
+        User user10 = new User();
+        user10.setUserId(UUID.randomUUID().toString());
+        user10.setGivenName("Andrew");
+        user10.setSurname("Saenz");
+        user10.setEmail("andrewsaenz@revature.net");
+        user10.setUsername("andrewsaenz");
+        user10.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user10.setIsActive(true);
+        user10.setRole(employee);
+        userRepository.save(user10);
+
+        User user11 = new User();
+        user11.setUserId(UUID.randomUUID().toString());
+        user11.setGivenName("Arthur");
+        user11.setSurname("Davidson");
+        user11.setEmail("arthurdavidson@revature.net");
+        user11.setUsername("arthurdavidson");
+        user11.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user11.setIsActive(true);
+        user11.setRole(employee);
+        userRepository.save(user11);
+
+        User user12 = new User();
+        user12.setUserId(UUID.randomUUID().toString());
+        user12.setGivenName("Cameron");
+        user12.setSurname("Lintz");
+        user12.setEmail("cameronlintz@revature.net");
+        user12.setUsername("cameronlintz");
+        user12.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user12.setIsActive(true);
+        user12.setRole(employee);
+        userRepository.save(user12);
+
+        User user13 = new User();
+        user13.setUserId(UUID.randomUUID().toString());
+        user13.setGivenName("Carlos");
+        user13.setSurname("Iniguez");
+        user13.setEmail("carlosiniguez@revature.net");
+        user13.setUsername("carlosiniguez");
+        user13.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user13.setIsActive(true);
+        user13.setRole(employee);
+        userRepository.save(user13);
+
+        User user14 = new User();
+        user14.setUserId(UUID.randomUUID().toString());
+        user14.setGivenName("Ebenezer");
+        user14.setSurname("Belay");
+        user14.setEmail("ebenezerbelay@revature.net");
+        user14.setUsername("ebenezerbelay");
+        user14.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user14.setIsActive(true);
+        user14.setRole(employee);
+        userRepository.save(user14);
+
+        User user15 = new User();
+        user15.setUserId(UUID.randomUUID().toString());
+        user15.setGivenName("Khari");
+        user15.setSurname("Thompson");
+        user15.setEmail("kharithompson@revature.net");
+        user15.setUsername("kharithompson");
+        user15.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user15.setIsActive(true);
+        user15.setRole(employee);
+        userRepository.save(user15);
+
+        User user16 = new User();
+        user16.setUserId(UUID.randomUUID().toString());
+        user16.setGivenName("Trevor");
+        user16.setSurname("Thomas");
+        user16.setEmail("trevorthomas@revature.net");
+        user16.setUsername("trevorthomas");
+        user16.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user16.setIsActive(true);
+        user16.setRole(employee);
+        userRepository.save(user16);
+
     }
 }
