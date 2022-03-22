@@ -18,10 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/reimbursements")
 public class ReimbursementController {
@@ -105,10 +107,10 @@ public class ReimbursementController {
     @GetMapping(value = "find-all-pending-reimbursements-by-finance-manager",produces = "application/json")
     public List<ReimbursementResponse> findAllPendingReimbursementsByFinanceManager(HttpServletRequest request){
         Principal requester = tokenService.extractRequesterDetails(request.getHeader("Authorization"));
-        //TODO need to be implemented
 
+        List<ReimbursementResponse> pendingReimbursementList = reimbursementService.findAllPendingReimbursement(requester);
 
-        return null;
+        return pendingReimbursementList;
     }
 
     //An authenticated finance manager can view a history of requests that they have approved/denied
