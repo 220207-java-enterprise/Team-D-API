@@ -101,13 +101,13 @@ public class DummyDataInserter implements CommandLineRunner{
         admin.setRoleId("1");
         admin.setRole("ADMIN");
 
-        UserRole employee = new UserRole();
-        employee.setRoleId("2");
-        employee.setRole("FINANCE MANAGER");
-
         UserRole manager = new UserRole();
-        manager.setRoleId("3");
-        manager.setRole("EMPLOYEE");
+        manager.setRoleId("2");
+        manager.setRole("FINANCE MANAGER");
+
+        UserRole employee = new UserRole();
+        employee.setRoleId("3");
+        employee.setRole("EMPLOYEE");
 
 
         reimbursementStatusRepository.save(ersReimbStatus_PENDING);
