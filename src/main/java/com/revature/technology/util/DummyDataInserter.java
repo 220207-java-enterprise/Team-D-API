@@ -323,5 +323,48 @@ public class DummyDataInserter implements CommandLineRunner{
         user16.setRole(employee);
         userRepository.save(user16);
 
+        User user17 = new User();
+        user17.setUserId(UUID.randomUUID().toString());
+        user17.setGivenName("Claire");
+        user17.setSurname("Abel");
+        user17.setEmail("claireabel@revature.net");
+        user17.setUsername("claireabel");
+        user17.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user17.setIsActive(false);
+        user17.setRole(employee);
+        userRepository.save(user17);
+
+        User user18 = new User();
+        user18.setUserId(UUID.randomUUID().toString());
+        user18.setGivenName("Janay");
+        user18.setSurname("Seymour");
+        user18.setEmail("janaysemour@revature.net");
+        user18.setUsername("janaysemour");
+        user18.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user18.setIsActive(false);
+        user18.setRole(employee);
+        userRepository.save(user18);
+
+        User user19 = new User();
+        user19.setUserId(UUID.randomUUID().toString());
+        user19.setGivenName("Bao");
+        user19.setSurname("Duong");
+        user19.setEmail("baoduong@revature.net");
+        user19.setUsername("baoduong");
+        user19.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user19.setIsActive(false);
+        user19.setRole(manager);
+        userRepository.save(user19);
+
+        User user20 = new User();
+        user20.setUserId(UUID.randomUUID().toString());
+        user20.setGivenName("Azhya");
+        user20.setSurname("Knox");
+        user20.setEmail("azhyaknox@revature.net");
+        user20.setUsername("azhyaknox");
+        user20.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user20.setIsActive(false);
+        user20.setRole(manager);
+        userRepository.save(user20);
     }
 }
