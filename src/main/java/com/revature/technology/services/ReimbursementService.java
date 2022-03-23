@@ -7,6 +7,7 @@ import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
+import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.models.Reimbursement;
 import com.revature.technology.models.ReimbursementStatus;
 import com.revature.technology.models.ReimbursementType;
@@ -15,6 +16,8 @@ import com.revature.technology.repositories.ReimbRepository;
 import com.revature.technology.repositories.ReimbStatusRepository;
 import com.revature.technology.repositories.ReimbTypeRepository;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.DummyDataInserter;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.NotLoggedInException;
@@ -35,12 +38,19 @@ public class ReimbursementService {
     ReimbTypeRepository reimbTypeRepository;
     ReimbStatusRepository reimbStatusRepository;
 
+    private static PrismClient prismClient;
+    private static DummyDataInserter prismSetup;
+
     @Autowired
-    public ReimbursementService(ReimbRepository reimbRepository, UserRepository userRepository,ReimbTypeRepository reimbTypeRepository, ReimbStatusRepository reimbStatusRepository) {
+    public ReimbursementService(ReimbRepository reimbRepository, UserRepository userRepository,ReimbTypeRepository reimbTypeRepository,
+                                ReimbStatusRepository reimbStatusRepository, PrismClient prismClient,
+                                DummyDataInserter prismSetup) {
         this.reimbRepository = reimbRepository;
         this.userRepository = userRepository;
         this.reimbTypeRepository = reimbTypeRepository;
         this.reimbStatusRepository = reimbStatusRepository;
+        this.prismClient = prismClient;
+        this.prismSetup = prismSetup;
     }
 
     //For Employee ---------------------------------------------------------------------------------------
@@ -60,7 +70,7 @@ public class ReimbursementService {
         return reimbursementResponseList;
     }
 
-    public  String updatePendingReimbursementByEmployee(UpdatePendingReimbursementRequest updatePendingReimbursementRequest, Principal requester){
+    public ResourceCreationResponse updatePendingReimbursementByEmployee(UpdatePendingReimbursementRequest updatePendingReimbursementRequest, Principal requester){
         Reimbursement reimbursement = reimbRepository.getReimbByReimbId(updatePendingReimbursementRequest.getReimbursementId());
 
         if(reimbursement == null){
@@ -77,10 +87,14 @@ public class ReimbursementService {
 
         if(updatePendingReimbursementRequest.getAmount()>0 && updatePendingReimbursementRequest.getAmount()<10000){
             reimbursement.setAmount(updatePendingReimbursementRequest.getAmount());
+        }else{
+            throw new InvalidRequestException("invalid amount");
         }
 
         if(updatePendingReimbursementRequest.getDescription() != null){
             reimbursement.setDescription(updatePendingReimbursementRequest.getDescription());
+        }else{
+            throw new InvalidRequestException("invalid description");
         }
 
         if(updatePendingReimbursementRequest.getReceipt() != null){
@@ -93,13 +107,13 @@ public class ReimbursementService {
             updatePendingReimbursementRequest.getReimbursementType().equals("OTHER")
         ){
            reimbursement.setType(reimbTypeRepository.getReimbByType(updatePendingReimbursementRequest.getReimbursementType()));
-        }else if (updatePendingReimbursementRequest.getReimbursementType() != null){
-            throw new InvalidRequestException("reimbursement type does not exist");
+        }else{
+            throw new InvalidRequestException("invalid reimbursement type");
         }
 
         reimbRepository.save(reimbursement);
 
-        return "successful update your reimbursement.";
+        return new ResourceCreationResponse(updatePendingReimbursementRequest.getReimbursementId());
     }
 
     public List<ReimbursementResponse> findAllReimbursementsByEmployee(Principal requester){
@@ -119,7 +133,7 @@ public class ReimbursementService {
         return reimbursementResponseList;
     }
 
-    public String submitNewReimbursementRequestByEmployee (NewReimbursementRequest newReimbursementRequest, Principal requester){
+    public ResourceCreationResponse submitNewReimbursementRequestByEmployee (NewReimbursementRequest newReimbursementRequest, Principal requester){
 
         if (requester == null){
             throw new NotLoggedInException();
@@ -145,7 +159,7 @@ public class ReimbursementService {
         newReimbursement.setStatus(reimbursementStatus);
 
         reimbRepository.save(newReimbursement);
-        return newReimbursementId;
+        return new ResourceCreationResponse(newReimbursementId);
     }
     //---------------------------------------------------------------------------------------
 
@@ -280,6 +294,11 @@ public class ReimbursementService {
             resolvedReimbursement.setResolved(LocalDateTime.now());
             resolvedReimbursement.setResolverUser(resolver);
             resolvedReimbursement.setStatus(new ReimbursementStatus("2","APPROVED"));
+
+            String paymentId = prismClient.postPaymentUsingPrism(prismSetup.getAuthOrg(),
+                    resolvedReimbursement.getAuthorUser(), resolvedReimbursement);
+
+            resolvedReimbursement.setPaymentId(paymentId);
             reimbRepository.save(resolvedReimbursement);
 
             ReimbursementResponse reimbursementResponse = new ReimbursementResponse(

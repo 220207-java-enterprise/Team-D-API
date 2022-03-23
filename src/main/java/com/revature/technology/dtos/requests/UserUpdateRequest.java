@@ -3,7 +3,7 @@ package com.revature.technology.dtos.requests;
 import java.util.Objects;
 
 public class UserUpdateRequest {
-        private String user_id;
+        private String userId;
         private String given_name;
         private String surname;
         private String email;
@@ -43,12 +43,12 @@ public class UserUpdateRequest {
             this.isActive = isActive;
         }
 
-        public String getUser_id() {
-            return user_id;
+        public String getUserId() {
+            return userId;
         }
 
-        public void setUser_id(String user_id) {
-            this.user_id = user_id;
+        public void setUserId(String userId) {
+            this.userId = userId;
         }
 
         public String getGiven_name() {
@@ -108,7 +108,7 @@ public class UserUpdateRequest {
         }
 
         public String toFileString() {
-            return new StringBuilder(user_id).append(":")
+            return new StringBuilder(userId).append(":")
                     .append(given_name).append(":")
                     .append(surname).append(":")
                     .append(email).append(":")
@@ -119,13 +119,13 @@ public class UserUpdateRequest {
 
         @Override
         public int hashCode() {
-            return Objects.hash(user_id, given_name, surname, email, username, password, role);
+            return Objects.hash(userId, given_name, surname, email, username, password, role);
         }
 
     @Override
     public String toString() {
         return "UserUpdateRequest{" +
-                "user_id='" + user_id + '\'' +
+                "user_id='" + userId + '\'' +
                 ", given_name='" + given_name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +

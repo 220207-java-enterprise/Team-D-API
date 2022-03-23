@@ -8,6 +8,8 @@ import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
 
 import com.revature.technology.repositories.UserRoleRepository;
+import com.revature.technology.util.DummyDataInserter;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ResourceConflictException;
 import org.junit.jupiter.api.Assertions;
@@ -17,6 +19,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -28,14 +31,17 @@ public class UserServiceTest {
     private UserService sut;
     private UserRepository mockUserRepository;
     private UserRoleRepository mockUserRoleRepository;
-
+    private PrismClient mockPrismClient;
+    private DummyDataInserter mockPrismSetup;
 
     @BeforeEach
     public void setup(){
         mockUserRoleRepository = mock(UserRoleRepository.class);
         mockUserRepository = mock(UserRepository.class);
+        mockPrismClient = mock(PrismClient.class);
+        mockPrismSetup = mock(DummyDataInserter.class);
 
-        sut = new UserService(mockUserRepository, mockUserRoleRepository);
+        sut = new UserService(mockUserRepository, mockUserRoleRepository, mockPrismClient, mockPrismSetup);
     }
 
     @Test
@@ -200,7 +206,8 @@ public class UserServiceTest {
     public void test_isUsernameAvailable_givenDuplicateUsername(){
         // Arrange
         String username = "4bhilekh";
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> emptyUser = Optional.of(new User());
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(emptyUser);
         // Act
         boolean result = sut.isUsernameAvailable(username);
 
@@ -252,7 +259,8 @@ public class UserServiceTest {
         String username = duplicateUserToSave.getUsername();
         String email = duplicateUserToSave.getEmail();
 
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> empty = Optional.empty();
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
         when(mockUserRepository.getUserByEmail(email)).thenReturn(new User());
 
         try {
@@ -306,12 +314,13 @@ public class UserServiceTest {
         when(spiedSut.isUsernameValid(username)).thenReturn(true);
         when(spiedSut.isPasswordValid(password)).thenReturn(true);
         // How can I return a potentialUser (containing the hashed password?)
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+        Optional<User> empty = Optional.empty();
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
 
         if(loginRequest.getPassword().equals(loginRequest.getPassword())) {
-            User authUser = mockUserRepository.getUserByUsername(username);
+            Optional<User> authUser = mockUserRepository.getUserByUsername(username);
             // Assert
-            Assertions.assertNotNull(authUser);
+            Assertions.assertFalse(authUser.isPresent());
         }
     }
 
@@ -321,7 +330,8 @@ public class UserServiceTest {
         String unknownUsername = "unknownuser";
         String somePassword = "p4$$WORD";
         LoginRequest loginRequest = new LoginRequest(unknownUsername, somePassword);
-        when(mockUserRepository.getUserByUsernameAndPassword(unknownUsername, somePassword)).thenReturn(null);
+        Optional<User> empty = Optional.empty();
+        when(mockUserRepository.getUserByUsernameAndPassword(unknownUsername, somePassword)).thenReturn(empty);
 
         //Act
         Exception exception = assertThrows(RuntimeException.class, () -> {

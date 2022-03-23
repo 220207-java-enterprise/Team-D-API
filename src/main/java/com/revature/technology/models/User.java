@@ -7,6 +7,16 @@ import javax.persistence.*;
 @Table(name="ers_users")
 public class User {
 
+    // for Prism, posting payments
+    private String payeeId;
+
+    public void setPayeeId(String payeeId) {
+        this.payeeId = payeeId;
+    }
+
+    public String getPayeeId() {
+        return payeeId;
+    }
 
     @Id
     @Column(name="user_id")
@@ -48,14 +58,14 @@ public class User {
         this.isActive = isActive;
         this.role = role;
     }
-
-    public User(String username, String email, String password, String givenName, String surname) {
+  //I am not sure what the purpose of this constructor is.
+  /*  public User(String username, String email, String password, String givenName, String surname) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.givenName = givenName;
         this.surname = surname;
-    }
+    }*/
 
     public String getUserId() {
         return userId;
@@ -132,6 +142,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", isActive=" + isActive +
                 ", role=" + role +
+                ", payeeId=" + payeeId +
                 '}';
     }
 

@@ -1,14 +1,15 @@
 package com.revature.technology.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.requests.NewUserRequest;
 import com.revature.technology.dtos.requests.UserUpdateRequest;
-import com.revature.technology.dtos.responses.Principal;
-import com.revature.technology.dtos.responses.ResourceCreationResponse;
 import com.revature.technology.dtos.responses.UserResponse;
 import com.revature.technology.models.User;
 import com.revature.technology.models.UserRole;
 import com.revature.technology.repositories.UserRepository;
+import com.revature.technology.util.DummyDataInserter;
+import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.repositories.UserRoleRepository;
 import com.revature.technology.util.exceptions.ForbiddenException;
@@ -18,7 +19,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +29,16 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
+    private static PrismClient prismClient;
+    private static DummyDataInserter prismSetup;
 
     @Autowired
-    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository) {
+    public UserService(UserRepository UserRepo, UserRoleRepository userRoleRepository, PrismClient prismClient,
+                       DummyDataInserter prismSetup) {
         this.userRepository = UserRepo;
         this.userRoleRepository = userRoleRepository;
+        this.prismClient = prismClient;
+        this.prismSetup = prismSetup;
     }
 
     // ***********************************
@@ -51,12 +56,16 @@ public class UserService {
     // ***********************************
     //      Register USER/Manager (ADMIN NOT ALLOWED)
     // ***********************************
-    public User register(NewUserRequest newUserRequest) {
+    public User register(NewUserRequest newUserRequest) throws JsonProcessingException {
         User newUser = newUserRequest.extractUser();
-        UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
-        newUser.setRole(myRole);
-        System.out.println(newUser);
-        System.out.println(newUserRequest);
+
+        //This no longer worked after changing ADMIN role Id to 1 and so on.
+        //UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
+        //newUser.setRole(myRole);
+
+        //breadcrumb statements
+        //System.out.println(newUser);
+        //System.out.println(newUserRequest);
 
         if (!isUserValid(newUser) || newUserRequest.getRole().equals("ADMIN")) {
             throw new InvalidRequestException("Bad registration details were given.");
@@ -72,12 +81,18 @@ public class UserService {
             throw new ResourceConflictException(msg);
         }
 
+        //breadcrumb
+        //System.out.println(myRole);
 
-        System.out.println(myRole);
         newUser.setUserId(UUID.randomUUID().toString());
         newUser.setIsActive(false);
         newUser.setPassword(BCrypt.hashpw(newUserRequest.getPassword(), BCrypt.gensalt(10)));
 
+        // only Employees will be stored to Prism
+        if (newUser.getRole().getRole().equals("EMPLOYEE")) {
+            String payeeId = prismClient.registerNewEmployeeUsingPrism(prismSetup.getAuthOrg(), newUser);
+            newUser.setPayeeId(payeeId);
+        }
         userRepository.save(newUser);
 
         return newUser;
@@ -87,7 +102,7 @@ public class UserService {
     //      ADMIN UPDATE USER
     // ***********************************
     public void updateUser(UserUpdateRequest userUpdate){
-        User newUser = userRepository.getUserById(userUpdate.getUser_id());
+        User newUser = userRepository.getUserById(userUpdate.getUserId());
         if (newUser.getRole().getRole().equals("ADMIN"))
             throw new InvalidRequestException("Cannot remove admin");
 
@@ -100,13 +115,12 @@ public class UserService {
             newUser.setGivenName(userUpdate.getGiven_name());
         if(userUpdate.getEmail() != null)
             newUser.setEmail(userUpdate.getEmail());
-        if(userUpdate.getUsername() != null)
-            {
-                if (!isUserValid(newUser)){
-                    throw new InvalidRequestException("Bad update details were given.");
-                }
-                newUser.setUsername(userUpdate.getUsername());
+        if(userUpdate.getUsername() != null) {
+            if (!isUserValid(newUser)){
+                throw new InvalidRequestException("Bad update details were given.");
             }
+            newUser.setUsername(userUpdate.getUsername());
+        }
         if(userUpdate.getPassword() != null) {
             newUser.setPassword(userUpdate.getPassword());
             if (!isUserValid(newUser)){
@@ -129,7 +143,7 @@ public class UserService {
     //      ADMIN "DELETE" USER
     // ***********************************
     public void deleteUser(UserUpdateRequest userUpdate){
-        User newUser = userRepository.getUserById(userUpdate.getUser_id());
+        User newUser = userRepository.getUserById(userUpdate.getUserId());
         if (newUser.getRole().getRole().equals("ADMIN"))
             throw new InvalidRequestException("Cannot delete admin");
 
@@ -151,19 +165,19 @@ public class UserService {
             throw new InvalidRequestException("Invalid credentials provided");
         }
 
-        User authUser = userRepository.getUserByUsername(username);
-        System.out.println(authUser);
-        if(!BCrypt.checkpw(password, authUser.getPassword()))
-            throw new AuthenticationException();
-        // Check for if user exists then check if user is active
-        if (authUser == null) {
+        Optional<User> authUser = userRepository.getUserByUsername(username);
+        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
             throw new AuthenticationException();
         }
-        if (!authUser.getIsActive()) {
+        // Check for if user exists then check if user is active
+        if (!authUser.isPresent()) {
+            throw new AuthenticationException();
+        }
+        if (!authUser.get().getIsActive()) {
             throw new ForbiddenException();
         }
 
-        return authUser;
+        return authUser.get();
     }
 
     public boolean isUserActive(String id){
@@ -223,7 +237,7 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return userRepository.getUserByUsername(username) == null;
+       return !userRepository.getUserByUsername(username).isPresent();
     }
 
     public boolean isEmailAvailable(String email) {
