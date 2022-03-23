@@ -174,7 +174,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user3.setGivenName("Adam");
         user3.setSurname("Lyn");
         user3.setEmail("adamlyn@revature.net");
-        user3.setUsername("adamlyn");
+        user3.setUsername("adamlynn");
         user3.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user3.setIsActive(true);
         user3.setRole(employee);
