@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Component
-public class DummyDataInserter implements CommandLineRunner{
+public class DummyDataInserter implements CommandLineRunner {
 
     private final ReimbRepository reimbursementRepository;
     private final ReimbStatusRepository reimbursementStatusRepository;
@@ -366,5 +366,41 @@ public class DummyDataInserter implements CommandLineRunner{
         user20.setIsActive(false);
         user20.setRole(manager);
         userRepository.save(user20);
+
+
+        User user21 = new User();
+        user21.setUserId("2");
+        user21.setGivenName("Guy");
+        user21.setSurname("Dood");
+        user21.setEmail("guydood@gmail.com");
+        user21.setUsername("HandsomeDevil");
+        user21.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user21.setIsActive(true);
+        user21.setRole(new UserRole("2", "FINANCE MANAGER"));
+
+        User user22 = new User();
+        user22.setUserId("3");
+        user22.setGivenName("Lady");
+        user22.setSurname("Gal");
+        user22.setEmail("ladygal@gmail.com");
+        user22.setUsername("WonderWoman");
+        user22.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        user22.setIsActive(true);
+        user22.setRole(new UserRole("3", "USER"));
+
+
+        User myadmin = new User();
+        myadmin.setUserId("4");
+        myadmin.setGivenName("Hugh");
+        myadmin.setSurname("Jackman");
+        myadmin.setEmail("wolverine@gmail.com");
+        myadmin.setUsername("iamwolverine");
+        myadmin.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
+        myadmin.setIsActive(true);
+        myadmin.setRole(new UserRole("1", "ADMIN"));
+
+        userRepository.save(user21);
+        userRepository.save(user22);
+        userRepository.save(myadmin);
     }
 }
