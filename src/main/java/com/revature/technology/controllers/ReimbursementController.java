@@ -18,12 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/reimbursements")
 public class ReimbursementController {

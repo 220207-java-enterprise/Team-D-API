@@ -58,14 +58,10 @@ public class UserService {
     // ***********************************
     public User register(NewUserRequest newUserRequest) throws JsonProcessingException {
         User newUser = newUserRequest.extractUser();
-
-        //This no longer worked after changing ADMIN role Id to 1 and so on.
-        //UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
-        //newUser.setRole(myRole);
-
-        //breadcrumb statements
-        //System.out.println(newUser);
-        //System.out.println(newUserRequest);
+        UserRole myRole = userRoleRepository.getUserRoleByRole(newUserRequest.getRole());
+        newUser.setRole(myRole);
+        System.out.println(newUser);
+        System.out.println(newUserRequest);
 
         if (!isUserValid(newUser) || newUserRequest.getRole().equals("ADMIN")) {
             throw new InvalidRequestException("Bad registration details were given.");
@@ -81,8 +77,7 @@ public class UserService {
             throw new ResourceConflictException(msg);
         }
 
-        //breadcrumb
-        //System.out.println(myRole);
+        System.out.println(myRole);
 
         newUser.setUserId(UUID.randomUUID().toString());
         newUser.setIsActive(false);
@@ -165,19 +160,20 @@ public class UserService {
             throw new InvalidRequestException("Invalid credentials provided");
         }
 
-        Optional<User> authUser = userRepository.getUserByUsername(username);
-        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
+        User authUser = userRepository.getUserByUsername(username);
+        System.out.println(authUser);
+        if(!BCrypt.checkpw(password, authUser.getPassword())){
             throw new AuthenticationException();
         }
         // Check for if user exists then check if user is active
-        if (!authUser.isPresent()) {
+        if (authUser == null) {
             throw new AuthenticationException();
         }
-        if (!authUser.get().getIsActive()) {
+        if (!authUser.getIsActive()) {
             throw new ForbiddenException();
         }
 
-        return authUser.get();
+        return authUser;
     }
 
     public boolean isUserActive(String id){
@@ -237,7 +233,7 @@ public class UserService {
     }
 
     public boolean isUsernameAvailable(String username) {
-       return !userRepository.getUserByUsername(username).isPresent();
+        return userRepository.getUserByUsername(username) == null;
     }
 
     public boolean isEmailAvailable(String email) {

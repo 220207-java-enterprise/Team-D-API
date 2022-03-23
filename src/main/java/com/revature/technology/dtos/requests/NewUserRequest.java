@@ -104,21 +104,7 @@ public class NewUserRequest {
     //In the database, the role ID and role names are the same. So ADMIN ADMIN would be an entry for example.
     public User extractUser() {
         String user_id = UUID.randomUUID().toString();
-        UserRole aRole = new UserRole();
-        switch (role) {
-            case "ADMIN":
-                aRole.setRoleId("1");
-                aRole.setRole("ADMIN");
-                break;
-            case "FINANCE MANAGER":
-                aRole.setRole("FINANCE MANAGER");
-                aRole.setRoleId("2");
-                break;
-            case "EMPLOYEE":
-                aRole.setRole("EMPLOYEE");
-                aRole.setRoleId("3");
-                break;
-        }
-        return new User(user_id, username, email, password, givenName, surname, false, aRole);
+        UserRole aRole = new UserRole(this.role, this.role);
+        return new User(username, email, password, givenName, surname);
     }
 }

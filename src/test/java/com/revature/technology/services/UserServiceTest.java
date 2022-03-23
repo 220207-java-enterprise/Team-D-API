@@ -19,7 +19,6 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -206,8 +205,7 @@ public class UserServiceTest {
     public void test_isUsernameAvailable_givenDuplicateUsername(){
         // Arrange
         String username = "4bhilekh";
-        Optional<User> emptyUser = Optional.of(new User());
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(emptyUser);
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
         // Act
         boolean result = sut.isUsernameAvailable(username);
 
@@ -259,8 +257,8 @@ public class UserServiceTest {
         String username = duplicateUserToSave.getUsername();
         String email = duplicateUserToSave.getEmail();
 
-        Optional<User> empty = Optional.empty();
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
+
         when(mockUserRepository.getUserByEmail(email)).thenReturn(new User());
 
         try {
@@ -314,13 +312,12 @@ public class UserServiceTest {
         when(spiedSut.isUsernameValid(username)).thenReturn(true);
         when(spiedSut.isPasswordValid(password)).thenReturn(true);
         // How can I return a potentialUser (containing the hashed password?)
-        Optional<User> empty = Optional.empty();
-        when(mockUserRepository.getUserByUsername(username)).thenReturn(empty);
+        when(mockUserRepository.getUserByUsername(username)).thenReturn(new User());
 
         if(loginRequest.getPassword().equals(loginRequest.getPassword())) {
-            Optional<User> authUser = mockUserRepository.getUserByUsername(username);
+            User authUser = mockUserRepository.getUserByUsername(username);
             // Assert
-            Assertions.assertFalse(authUser.isPresent());
+            Assertions.assertNotNull(authUser);
         }
     }
 
@@ -330,8 +327,7 @@ public class UserServiceTest {
         String unknownUsername = "unknownuser";
         String somePassword = "p4$$WORD";
         LoginRequest loginRequest = new LoginRequest(unknownUsername, somePassword);
-        Optional<User> empty = Optional.empty();
-        when(mockUserRepository.getUserByUsernameAndPassword(unknownUsername, somePassword)).thenReturn(empty);
+        when(mockUserRepository.getUserByUsernameAndPassword(unknownUsername, somePassword)).thenReturn(null);
 
         //Act
         Exception exception = assertThrows(RuntimeException.class, () -> {
