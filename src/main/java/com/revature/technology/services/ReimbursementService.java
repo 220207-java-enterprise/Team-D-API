@@ -242,6 +242,43 @@ public class ReimbursementService {
         return reimbursementResponseList;
     }
 
+    public List<ReimbursementResponse> findAllReimbursements(Principal requester){
+
+        if (requester == null){
+            throw new NotLoggedInException();
+        }
+
+        if (!requester.getRole().equals("FINANCE MANAGER")){
+            throw new ForbiddenException();
+        }
+
+        Iterable<Reimbursement> reimbursementIterable  = reimbRepository.findAll();
+
+        List<ReimbursementResponse> reimbursementResponseList = new ArrayList<>();
+        for(Reimbursement reimbursement : reimbursementIterable){
+            ReimbursementResponse reimbursementResponse = new ReimbursementResponse(
+                    reimbursement.getReimbId(),
+                    reimbursement.getAmount(),
+                    reimbursement.getSubmitted(),
+                    reimbursement.getResolved(),
+                    reimbursement.getDescription(),
+                    reimbursement.getReceipt(),
+                    reimbursement.getPaymentId(),
+                    reimbursement.getAuthorUser().getGivenName() + " " + reimbursement.getAuthorUser().getSurname(),
+                    reimbursement.getStatus().getStatus(),
+                    reimbursement.getType().getType()
+            );
+            if(reimbursement.getResolverUser() != null){
+                reimbursementResponse.setResolver(reimbursement.getResolverUser().getGivenName() + " " + reimbursement.getResolverUser().getSurname());
+            }
+
+            reimbursementResponseList.add(reimbursementResponse);
+        }
+        return reimbursementResponseList;
+    }
+
+
+
     public List<ReimbursementResponse> findAllReimbursementsByManager(Principal requester){
 
 
