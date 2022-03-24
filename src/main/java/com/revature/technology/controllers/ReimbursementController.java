@@ -44,6 +44,7 @@ public class ReimbursementController {
 
     //An authenticated employee can view their pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/employee/all-pending-reimbursements
+    @CrossOrigin
     @Secured(allowedRoles = "EMPLOYEE")
     @DeleteMapping(value = "employee/recall-pending-reimbursement",produces = "application/json")
     HashMap<String, Object> recallPendingReimbursement(@RequestBody RecallReimbursementRequest recallRequest) {
