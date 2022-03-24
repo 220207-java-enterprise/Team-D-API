@@ -166,9 +166,6 @@ public class UserService {
         }
 
         Optional<User> authUser = userRepository.getUserByUsername(username);
-        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
-            throw new AuthenticationException();
-        }
         // Check for if user exists then check if user is active
         if (!authUser.isPresent()) {
             throw new AuthenticationException();
@@ -176,6 +173,10 @@ public class UserService {
         if (!authUser.get().getIsActive()) {
             throw new ForbiddenException();
         }
+        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
+            throw new AuthenticationException();
+        }
+
 
         return authUser.get();
     }
