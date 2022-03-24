@@ -23,6 +23,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -391,7 +393,6 @@ public class DummyDataInserter implements CommandLineRunner {
         user19.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user19.setIsActive(false);
         user19.setRole(manager);
-        userRepository.save(user19);
 
         User user20 = new User();
         user20.setUserId(UUID.randomUUID().toString());
@@ -402,7 +403,6 @@ public class DummyDataInserter implements CommandLineRunner {
         user20.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user20.setIsActive(false);
         user20.setRole(manager);;
-        userRepository.save(user20);
 
 
         User user21 = new User();
@@ -423,7 +423,9 @@ public class DummyDataInserter implements CommandLineRunner {
         user22.setUsername("WonderWoman");
         user22.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user22.setIsActive(true);
-        user22.setRole(new UserRole("3", "USER"));
+        user22.setRole(new UserRole("3", "EMPLOYEE"));
+        String payeeId22 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user22);
+        user22.setPayeeId(payeeId22);
 
 
         User myadmin = new User();
@@ -439,5 +441,35 @@ public class DummyDataInserter implements CommandLineRunner {
         userRepository.save(user21);
         userRepository.save(user22);
         userRepository.save(myadmin);
+
+       // registerNewEmployeeUsingPrism(Authorg)
+
+        //-------Reimbursement Dummy Data-------------------------------
+        List<Reimbursement> dumReimb = new ArrayList<Reimbursement>();
+        System.out.println("WE OUT HERE-----------------------------------------------");
+        for(int i = 1; i < 100; i++){
+            Reimbursement myReimb = new Reimbursement();
+            myReimb.setReimbId(String.valueOf(i));
+            myReimb.setAmount((Math.random()*(9999+1)));
+            myReimb.setSubmitted(LocalDateTime.now());
+            myReimb.setDescription("Dummy Dum Data");
+            myReimb.setAuthorUser(userRepository.getRandomEmp());
+            int myType = (int) Math.floor(Math.random()*(3)+1);
+            myReimb.setType(reimbursementTypeRepository
+                    .getReimbByTypeId(String.valueOf(myType)));
+            int myStatus = (int) (Math.floor(Math.random()*(3)+1));
+            myReimb.setStatus(reimbursementStatusRepository.
+                    getReimbByStatusId(String.valueOf(myStatus)));
+            if (myStatus != 1) {
+                myReimb.setResolved(LocalDateTime.now());
+                myReimb.setResolverUser(userRepository.getRandomFM());
+                String paymentId = prismClient.postPaymentUsingPrism(getAuthOrg(),
+                        myReimb.getAuthorUser(), myReimb);
+                myReimb.setPaymentId(paymentId);
+            }
+
+            reimbursementRepository.save(myReimb);
+        }
+
     }
 }

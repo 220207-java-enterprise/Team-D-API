@@ -186,6 +186,7 @@ public class UserService {
         return authUser.get();
     }
 
+
     public boolean isUserActive(String id){
 
         User user = userRepository.getUserById(id);

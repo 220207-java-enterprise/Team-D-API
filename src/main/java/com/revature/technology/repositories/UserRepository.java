@@ -34,4 +34,23 @@ public interface UserRepository extends CrudRepository<User, String> {
 
     List<User> getAllByIsActive(Boolean active);
 
+    @Query(
+            value = ("SELECT * " +
+                    "FROM technology_project.ers_users " +
+                    "WHERE ROLE_ID = '3' " +
+                    "ORDER BY RANDOM() " +
+                    "LIMIT 1"),
+            nativeQuery = true
+    )
+    User getRandomEmp();
+
+    @Query(
+            value = ("SELECT * " +
+                    "FROM technology_project.ers_users " +
+                    "WHERE ROLE_ID = '2' " +
+                    "ORDER BY RANDOM() " +
+                    "LIMIT 1"),
+            nativeQuery = true
+    )
+    User getRandomFM();
 }
