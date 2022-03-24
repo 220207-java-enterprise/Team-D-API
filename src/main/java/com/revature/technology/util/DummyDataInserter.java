@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.UUID;
 
+
 @Component
 public class DummyDataInserter implements CommandLineRunner{
 
@@ -156,6 +157,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user1.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user1.setIsActive(true);
         user1.setRole(employee);
+        String payeeId1 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user1);
+        user1.setPayeeId(payeeId1);
         userRepository.save(user1);
 
         User user2 = new User();
@@ -167,6 +170,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user2.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user2.setIsActive(true);
         user2.setRole(employee);
+        String payeeId2 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user2);
+        user2.setPayeeId(payeeId2);
         userRepository.save(user2);
 
         User user3 = new User();
@@ -178,6 +183,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user3.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user3.setIsActive(true);
         user3.setRole(employee);
+        String payeeId3 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user3);
+        user3.setPayeeId(payeeId3);
         userRepository.save(user3);
 
         User user4 = new User();
@@ -189,6 +196,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user4.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user4.setIsActive(true);
         user4.setRole(employee);
+        String payeeId4 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user4);
+        user4.setPayeeId(payeeId4);
         userRepository.save(user4);
 
         User user5 = new User();
@@ -200,6 +209,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user5.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user5.setIsActive(true);
         user5.setRole(employee);
+        String payeeId5 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user5);
+        user5.setPayeeId(payeeId5);
         userRepository.save(user5);
 
         User user6 = new User();
@@ -211,6 +222,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user6.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user6.setIsActive(true);
         user6.setRole(employee);
+        String payeeId6 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user6);
+        user6.setPayeeId(payeeId6);
         userRepository.save(user6);
 
         User user7 = new User();
@@ -222,6 +235,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user7.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user7.setIsActive(true);
         user7.setRole(employee);
+        String payeeId7 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user7);
+        user7.setPayeeId(payeeId7);
         userRepository.save(user7);
 
         User user8 = new User();
@@ -233,6 +248,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user8.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user8.setIsActive(true);
         user8.setRole(employee);
+        String payeeId8 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user8);
+        user8.setPayeeId(payeeId8);
         userRepository.save(user8);
 
         User user9 = new User();
@@ -244,6 +261,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user9.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user9.setIsActive(true);
         user9.setRole(employee);
+        String payeeId9 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user9);
+        user9.setPayeeId(payeeId9);
         userRepository.save(user9);
 
         User user10 = new User();
@@ -255,6 +274,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user10.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user10.setIsActive(true);
         user10.setRole(employee);
+        String payeeId10 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user10);
+        user10.setPayeeId(payeeId10);
         userRepository.save(user10);
 
         User user11 = new User();
@@ -266,6 +287,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user11.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user11.setIsActive(true);
         user11.setRole(employee);
+        String payeeId11 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user11);
+        user11.setPayeeId(payeeId11);
         userRepository.save(user11);
 
         User user12 = new User();
@@ -277,6 +300,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user12.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user12.setIsActive(true);
         user12.setRole(employee);
+        String payeeId12 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user12);
+        user12.setPayeeId(payeeId12);
         userRepository.save(user12);
 
         User user13 = new User();
@@ -288,6 +313,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user13.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user13.setIsActive(true);
         user13.setRole(employee);
+        String payeeId13 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user13);
+        user13.setPayeeId(payeeId13);
         userRepository.save(user13);
 
         User user14 = new User();
@@ -299,6 +326,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user14.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user14.setIsActive(true);
         user14.setRole(employee);
+        String payeeId14 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user14);
+        user14.setPayeeId(payeeId14);
         userRepository.save(user14);
 
         User user15 = new User();
@@ -310,6 +339,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user15.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user15.setIsActive(true);
         user15.setRole(employee);
+        String payeeId15 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user15);
+        user15.setPayeeId(payeeId15);
         userRepository.save(user15);
 
         User user16 = new User();
@@ -321,6 +352,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user16.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user16.setIsActive(true);
         user16.setRole(employee);
+        String payeeId16 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user16);
+        user16.setPayeeId(payeeId16);
         userRepository.save(user16);
 
         User user17 = new User();
@@ -332,6 +365,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user17.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user17.setIsActive(false);
         user17.setRole(employee);
+        String payeeId17 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user17);
+        user17.setPayeeId(payeeId17);
         userRepository.save(user17);
 
         User user18 = new User();
@@ -343,6 +378,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user18.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user18.setIsActive(false);
         user18.setRole(employee);
+        String payeeId18 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user18);
+        user18.setPayeeId(payeeId18);
         userRepository.save(user18);
 
         User user19 = new User();
@@ -354,6 +391,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user19.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user19.setIsActive(false);
         user19.setRole(manager);
+        String payeeId19 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user19);
+        user19.setPayeeId(payeeId19);
         userRepository.save(user19);
 
         User user20 = new User();
@@ -365,6 +404,8 @@ public class DummyDataInserter implements CommandLineRunner{
         user20.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user20.setIsActive(false);
         user20.setRole(manager);
+        String payeeId20 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user20);
+        user20.setPayeeId(payeeId20);
         userRepository.save(user20);
     }
 }
