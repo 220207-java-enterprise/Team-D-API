@@ -173,6 +173,10 @@ public class UserService {
         if (!authUser.get().getIsActive()) {
             throw new ForbiddenException();
         }
+        if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
+            throw new AuthenticationException();
+        }
+
 
         if(!BCrypt.checkpw(password, authUser.get().getPassword())) {
             throw new AuthenticationException();
