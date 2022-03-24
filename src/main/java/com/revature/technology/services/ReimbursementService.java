@@ -2,6 +2,7 @@ package com.revature.technology.services;
 
 
 import com.revature.technology.dtos.requests.NewReimbursementRequest;
+import com.revature.technology.dtos.requests.RecallReimbursementRequest;
 import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 
@@ -21,14 +22,14 @@ import com.revature.technology.util.PrismClient;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.NotLoggedInException;
+import com.revature.technology.util.exceptions.RecallDisallowedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.unit.DataUnit;
-import javax.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -54,6 +55,23 @@ public class ReimbursementService {
     }
 
     //For Employee ---------------------------------------------------------------------------------------
+    public void recallReimbursement(RecallReimbursementRequest recallReimbursementRequest) {
+        String id = recallReimbursementRequest.getId();
+        Optional<Reimbursement> reimbursement = reimbRepository.findById(id);
+
+        if (reimbursement.isPresent()) {
+            System.out.println(reimbursement.get().getStatus().getStatus());
+            if(reimbursement.get().getStatus().getStatus().equals("PENDING")) {
+                System.out.println("Reimbursement Recalled");
+                reimbRepository.deleteById(id);
+            } else {
+                System.out.println("Cannot Recall Resolved Reimbursement.");
+                throw new RecallDisallowedException();
+            }
+
+        }
+    }
+
     public List<ReimbursementResponse> findAllPendingReimbursementsByEmployee(Principal requester){
 
         if (requester == null){
@@ -66,7 +84,7 @@ public class ReimbursementService {
         User currentUser = userRepository.getUserById(requester.getId());
         List<Reimbursement> reimbursementList = reimbRepository.getAllPendingByAuthorUser(currentUser, "PENDING");
 
-        List<ReimbursementResponse> reimbursementResponseList = ConvertReimbListToReimbResponseList(reimbursementList);
+        List<ReimbursementResponse> reimbursementResponseList = convertReimbListToReimbResponseList(reimbursementList);
         return reimbursementResponseList;
     }
 
@@ -129,7 +147,7 @@ public class ReimbursementService {
         User currentUser = userRepository.getUserById(requester.getId());
         List<Reimbursement> reimbursementList = reimbRepository.getAllByAuthorUser(currentUser);
 
-        List<ReimbursementResponse> reimbursementResponseList = ConvertReimbListToReimbResponseList(reimbursementList);
+        List<ReimbursementResponse> reimbursementResponseList = convertReimbListToReimbResponseList(reimbursementList);
         return reimbursementResponseList;
     }
 
@@ -163,20 +181,8 @@ public class ReimbursementService {
     }
     //---------------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
-
-
-
-
-
     //Helper function: use to convert List<Reimbursement> ---> List<ReimbursementResponse>
-    private List<ReimbursementResponse> ConvertReimbListToReimbResponseList (List<Reimbursement> reimbursementList){
+    private List<ReimbursementResponse> convertReimbListToReimbResponseList (List<Reimbursement> reimbursementList){
         List<ReimbursementResponse> reimbursementResponseList = new ArrayList<>();
         for(Reimbursement reimbursement : reimbursementList){
             ReimbursementResponse reimbursementResponse = new ReimbursementResponse(
@@ -341,4 +347,6 @@ public class ReimbursementService {
         }
 
     }
+
+
 }

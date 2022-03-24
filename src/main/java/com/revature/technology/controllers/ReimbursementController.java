@@ -3,6 +3,7 @@ package com.revature.technology.controllers;
 
 import com.revature.technology.dtos.requests.ApproveOrDenyReimbursementRequest;
 import com.revature.technology.dtos.requests.NewReimbursementRequest;
+import com.revature.technology.dtos.requests.RecallReimbursementRequest;
 import com.revature.technology.dtos.requests.UpdatePendingReimbursementRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.dtos.responses.ReimbursementResponse;
@@ -12,13 +13,15 @@ import com.revature.technology.services.TokenService;
 import com.revature.technology.util.exceptions.AuthenticationException;
 import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
+import com.revature.technology.util.exceptions.RecallDisallowedException;
 import com.revature.technology.util.security.Secured;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +41,17 @@ public class ReimbursementController {
 
     //---------------------------------------------------------------------------------------------------------------
     //For Employee
+
+    //An authenticated employee can view their pending reimbursement requests
+    //url: http://localhost:8080/technology-project/reimbursements/employee/all-pending-reimbursements
+    @Secured(allowedRoles = "EMPLOYEE")
+    @DeleteMapping(value = "employee/recall-pending-reimbursement",produces = "application/json")
+    HashMap<String, Object> recallPendingReimbursement(@RequestBody RecallReimbursementRequest recallRequest) {
+        HashMap<String, Object> responseBody = new HashMap<>();
+        reimbursementService.recallReimbursement(recallRequest);
+        responseBody.put("message", "Reimbursement Recalled");
+        return responseBody;
+    }
     //An authenticated employee can view their pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/employee/all-pending-reimbursements
     @Secured(allowedRoles = "EMPLOYEE")
@@ -154,6 +168,17 @@ public class ReimbursementController {
 
         return responseBody;
     }
+
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public HashMap<String, Object> handleRecallException(RecallDisallowedException e){
+//        HashMap<String, Object> responseBody = new HashMap<>();
+//        responseBody.put("status", 403);
+//        responseBody.put("message", e.getMessage());
+//        responseBody.put("timestamp", LocalDateTime.now());
+//
+//        return responseBody;
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
