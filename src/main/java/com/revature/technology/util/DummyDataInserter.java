@@ -391,8 +391,6 @@ public class DummyDataInserter implements CommandLineRunner{
         user19.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user19.setIsActive(false);
         user19.setRole(manager);
-        String payeeId19 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user19);
-        user19.setPayeeId(payeeId19);
         userRepository.save(user19);
 
         User user20 = new User();
@@ -403,9 +401,7 @@ public class DummyDataInserter implements CommandLineRunner{
         user20.setUsername("azhyaknox");
         user20.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user20.setIsActive(false);
-        user20.setRole(manager);
-        String payeeId20 = prismClient.registerNewEmployeeUsingPrism(getAuthOrg(), user20);
-        user20.setPayeeId(payeeId20);
+        user20.setRole(manager);;
         userRepository.save(user20);
     }
 }
