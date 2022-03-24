@@ -67,6 +67,7 @@ public class ReimbursementController {
 
     //An authenticated employee can view and manage their pending reimbursement requests
     //url: http://localhost:8080/technology-project/reimbursements/employee/reimbursement
+    @CrossOrigin
     @Secured(allowedRoles = "EMPLOYEE")
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(value = "employee/reimbursement", produces = "application/json", consumes = "application/json")
