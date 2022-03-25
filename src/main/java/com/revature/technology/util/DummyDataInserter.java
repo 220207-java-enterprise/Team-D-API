@@ -181,7 +181,7 @@ public class DummyDataInserter implements CommandLineRunner {
         user3.setGivenName("Adam");
         user3.setSurname("Lyn");
         user3.setEmail("adamlyn@revature.net");
-        user3.setUsername("adamlyn");
+        user3.setUsername("adamlyn1");
         user3.setPassword("$2a$10$Z/xu6Ujt7T5.lzZfBUkNA.WVvB3llWOaumUT7VI2.TfmybZbrjq0G");
         user3.setIsActive(true);
         user3.setRole(employee);
@@ -442,7 +442,7 @@ public class DummyDataInserter implements CommandLineRunner {
         userRepository.save(user22);
         userRepository.save(myadmin);
 
-       // registerNewEmployeeUsingPrism(Authorg)
+        // registerNewEmployeeUsingPrism(Authorg)
 
         //-------Reimbursement Dummy Data-------------------------------
         List<Reimbursement> dumReimb = new ArrayList<Reimbursement>();
@@ -471,5 +471,48 @@ public class DummyDataInserter implements CommandLineRunner {
             reimbursementRepository.save(myReimb);
         }
 
+        Reimbursement myReimb1 = new Reimbursement();
+        myReimb1.setReimbId(String.valueOf(199));
+        myReimb1.setAmount((Math.random()*(9999+1)));
+        myReimb1.setSubmitted(LocalDateTime.now());
+        myReimb1.setDescription("Dummy Dum Data Nonviolatile");
+        myReimb1.setAuthorUser(user16);
+        int myType = 1;
+        myReimb1.setType(reimbursementTypeRepository
+                .getReimbByTypeId(String.valueOf(myType)));
+        int myStatus = 1;
+        myReimb1.setStatus(reimbursementStatusRepository.
+                getReimbByStatusId(String.valueOf(myStatus)));
+        if (myStatus != 1) {
+            myReimb1.setResolved(LocalDateTime.now());
+            myReimb1.setResolverUser(userRepository.getRandomFM());
+            String paymentId = prismClient.postPaymentUsingPrism(getAuthOrg(),
+                    myReimb1.getAuthorUser(), myReimb1);
+            myReimb1.setPaymentId(paymentId);
+        }
+
+        reimbursementRepository.save(myReimb1);
+
+        Reimbursement myReimb2 = new Reimbursement();
+        myReimb2.setReimbId(String.valueOf(200));
+        myReimb2.setAmount((Math.random()*(9999+1)));
+        myReimb2.setSubmitted(LocalDateTime.now());
+        myReimb2.setDescription("Dummy Dum Data Nonviolatile");
+        myReimb2.setAuthorUser(user16);
+        myType = 1;
+        myReimb2.setType(reimbursementTypeRepository
+                .getReimbByTypeId(String.valueOf(myType)));
+        myStatus = 2;
+        myReimb2.setStatus(reimbursementStatusRepository.
+                getReimbByStatusId(String.valueOf(myStatus)));
+        if (myStatus != 1) {
+            myReimb2.setResolved(LocalDateTime.now());
+            myReimb2.setResolverUser(userRepository.getRandomFM());
+            String paymentId = prismClient.postPaymentUsingPrism(getAuthOrg(),
+                    myReimb2.getAuthorUser(), myReimb2);
+            myReimb2.setPaymentId(paymentId);
+        }
+
+        reimbursementRepository.save(myReimb2);
     }
 }

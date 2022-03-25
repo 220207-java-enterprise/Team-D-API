@@ -1,11 +1,11 @@
 package com.revature.technology.controllers;
 
-import com.fasterxml.jackson.databind.DatabindException;
 import com.revature.technology.dtos.requests.LoginRequest;
 import com.revature.technology.dtos.responses.Principal;
 import com.revature.technology.services.TokenService;
 import com.revature.technology.services.UserService;
 import com.revature.technology.util.exceptions.AuthenticationException;
+import com.revature.technology.util.exceptions.ForbiddenException;
 import com.revature.technology.util.exceptions.InvalidRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,16 +61,26 @@ public class AuthController {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public HashMap<String, Object> handleAuthenticationException(AuthenticationException e){
         HashMap<String, Object> responseBody = new HashMap<>();
-        responseBody.put("status", 401);
+        responseBody.put("status", 400);
         responseBody.put("message", e.getMessage());
         responseBody.put("timestamp", LocalDateTime.now());
 
         return responseBody;
     }
 
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public HashMap<String, Object> handleForbiddenException(ForbiddenException e){
+        HashMap<String, Object> responseBody = new HashMap<>();
+        responseBody.put("status", 403);
+        responseBody.put("message", e.getMessage());
+        responseBody.put("timestamp", LocalDateTime.now());
+
+        return responseBody;
+    }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public HashMap<String, Object> handleAnyOtherException(Exception e){
